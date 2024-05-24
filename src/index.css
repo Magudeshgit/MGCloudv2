@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SF-ProDisplay';
+  src: url('/src/assets/fonts/SF-Pro-Display-Regular.otf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'SF-ProDisplay';
+  src: url('/src/assets/fonts/SF-Pro-Display-Semibold.otf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'SF-ProDisplay';
+  src: url('/src/assets/fonts/SF-Pro-Display-Light.otf');
+  font-weight: lighter;
+}
+
+:root {
+  font-family: 'SF-ProDisplay';
+  font-weight: normal;
+  line-height: 1.5;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
