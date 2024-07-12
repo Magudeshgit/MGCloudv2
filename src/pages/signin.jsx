@@ -1,8 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import logo from '../assets/images/logo.svg'
 import { Link } from 'react-router-dom'
+import Loader from '../components/loader'
+import { useAuth } from '../authcontext'
+import { useNavigate } from 'react-router-dom'
+
+// import { authenticate } from '../authhelper'
 
 const Signin = () => {
+  const [loading, setloading]  = useState(false)
+  const {user, authenticate} = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    console.log(user)
+    if (user.isAuthenticated) navigate('/home')
+  }, [])
+
+
+  function formHandler(e) {
+    e.preventDefault()
+    setloading(true)
+    let formdata = new FormData(e.target)
+    let params = 
+    {
+      email: formdata.get('email'),
+      password: formdata.get('password')
+    }
+
+    authenticate(params).then(e=>{
+      setloading(false)
+      console.log(e)
+      if (e['status'] === 'success')
+      {
+        navigate('/home')
+      }
+    })
+    
+  }
   return (
     <div className="flex w-full items-center">
     <div className="flex min-h-full w-[50%] flex-1 flex-col px-6 py-8 lg:px-8">
@@ -19,7 +54,7 @@ const Signin = () => {
     </div>
 
     <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form className="space-y-4" action="#" method="POST">
+      <form className="space-y-4" action="#" method="POST" onSubmit={formHandler}>
         <div>
           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
             Email address
@@ -55,11 +90,12 @@ const Signin = () => {
         </div>
 
         <div>
-          <button
+        <button
             type="submit"
-            className="flex w-full justify-center rounded-md bg-[#414141] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-black transition-colors"
+            className="flex w-full gap-3 items-center justify-center rounded-md bg-[#414141] px-3 py-1.5 text-md font-semibold leading-6 text-white shadow-sm hover:bg-black transition-colors"
           >
             Sign in
+            {loading?<Loader/>:<></>}
           </button>
         </div>
       </form>
@@ -67,7 +103,7 @@ const Signin = () => {
       <p className="mt-6 text-center text-sm text-gray-500">
         Not a member?{' '}
         <Link to="/signup" className="font-semibold leading-6 text-[#414141] hover:black">
-          Signup
+        Signup
         </Link>
       </p>
     </div>
