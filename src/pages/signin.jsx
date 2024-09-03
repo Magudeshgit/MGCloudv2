@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import logo from '../assets/images/logo.svg'
 import { Link } from 'react-router-dom'
 import Loader from '../components/loader'
 import { useAuth } from '../authcontext'
 import { useNavigate } from 'react-router-dom'
 
-// import { authenticate } from '../authhelper'
+import viewpassword from '../assets/images/viewpassword.svg'
 
 const Signin = () => {
   const [loading, setloading]  = useState(false)
+  const [error, seterror]  = useState("")
   const {user, authenticate} = useAuth()
+  const passwordfield = useRef(null)
   const navigate = useNavigate()
 
   useEffect(()=>{
@@ -27,20 +29,27 @@ const Signin = () => {
       email: formdata.get('email'),
       password: formdata.get('password')
     }
-
+    
     authenticate(params).then(e=>{
       setloading(false)
-      console.log(e)
-      if (e['status'] === 'success')
+      if (e['status'] === 'failed')
       {
-        navigate('/home')
+        seterror("Your email and password combination is incorrect")
       }
+      console.log(e)
     })
+
     
   }
+
+  function ViewPassword()
+  {
+    if (passwordfield.current.type === "text") passwordfield.current.type = "password";
+    else passwordfield.current.type = "text";
+  }
   return (
-    <div className="flex w-full items-center">
-    <div className="flex min-h-full w-[50%] flex-1 flex-col px-6 py-8 lg:px-8">
+    <div className="flex min-w-full min-h-full items-center">
+    <div className="flex min-h-full min-w-full lg:min-w-[50%] flex-1 flex-col px-6 py-8 lg:px-8">
       
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <img
@@ -71,7 +80,7 @@ const Signin = () => {
           </div>
         </div>
 
-        <div>
+        <div className='relative'>
           <div className="flex items-center justify-between">
             <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
               Password
@@ -82,11 +91,14 @@ const Signin = () => {
               id="password"
               name="password"
               type="password"
+              ref={passwordfield}
               autoComplete="current-password"
               required
               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
             />
           </div>
+          <img src={viewpassword} alt="viewpassword" className='absolute top-[2.64rem] right-[1rem] cursor-pointer' onClick={ViewPassword}/>
+          <p className='text-red-500 text-[14px]'>{error}</p>
         </div>
 
         <div>
@@ -108,7 +120,7 @@ const Signin = () => {
       </p>
     </div>
     </div>
-    <div className="bg-[#d9d9d9] w-[50%] h-full">
+    <div className="bg-[#f13636] w-[50%] h-full">
 
     </div>
   </div>

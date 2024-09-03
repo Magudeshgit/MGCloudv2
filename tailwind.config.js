@@ -7,10 +7,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        "sfprodisplay": ['SF-ProDisplay']
+        "sfprodisplay": ['SF-ProDisplay'],
+        "poppins": ['poppins']
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
 }
 
