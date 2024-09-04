@@ -19,6 +19,8 @@ import fileactions from '../assets/images/threedots.svg'
 import PageNav from '../components/pagenav'
 import Uploadbtn from '../components/uploadbtn'
 import Fileactions from '../components/fileactions'
+import Statusdrawer from '../components/statusdrawer'
+import UploadNotification from '../components/uploadnotification'
 import { Link } from 'react-router-dom'
 
 

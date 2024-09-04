@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { UploadFiles } from '../helper'
 
 import add from '../assets/images/add.svg'
@@ -7,21 +7,38 @@ import folder from '../assets/images/folder2.svg'
 import fileico from '../assets/images/fileico.svg'
 import upload from '../assets/images/upload.svg'
 
+import UploadNotification from './uploadnotification'
+
 import { Link } from 'react-router-dom'
 
 
 
 const Uploadbtn = () => {
+    const [showstatus, Setshowstatus] = useState(
+        {
+            show: false,
+            filecount: 0,
+            files: [
+            {
+                filename: null,
+                filesize: null,
+                loaded: null,
+                fileprogress: null
+            }
+        ]
+    })
+    
     const dropdownref = useRef(null)
+
     function filesupload() {
-        const fr = new FileReader()
         const fileint = document.createElement('input')
         fileint.setAttribute('type', 'file')
         fileint.setAttribute('multiple', 'multiple')
         fileint.click()
 
         fileint.onchange = (e)=>{
-            UploadFiles(e.target.files)
+            console.log(e.target.files)
+            // UploadFiles(e.target.files, Setshowstatus)
         }
         dropdownref.current.removeAttribute('open')
     }
@@ -40,6 +57,7 @@ const Uploadbtn = () => {
     }
 
   return (
+    <>
     <details className="dropdown dropdown-end" ref={dropdownref}>
     <summary className="btn m-1 py-0 font-poppins text-gray-600 border border-gray-300  ">
         Upload
@@ -66,6 +84,8 @@ const Uploadbtn = () => {
         </li>
     </ul>
     </details>
+    {showstatus.show?<UploadNotification filecount={showstatus.filecount} drawerdata={showstatus.files}/>:<></>}
+    </>
   )
 }
 

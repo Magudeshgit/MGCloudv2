@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 const Fileactions = () => {
 
   return (
-    <details className="dropdown dropdown-left z-[100]">
+    <details className="dropdown dropdown-left">
         <summary className="btn p-4 h-0 min-h-0 bg-white border-none shadow-none">
             <img src={fileactions} alt="fileactions" className='w-4'/>
         </summary>
@@ -20,27 +20,6 @@ const Fileactions = () => {
                 <Link>
                     <img src={download} alt="download"  className='opacity-65'/>
                     Download
-                </Link>
-            </li>
-
-            <li>
-                <Link>
-                    <img src={move} alt="move"  className='opacity-65'/>
-                    Move
-                </Link>
-            </li>
-
-            <li>
-                <Link>
-                    <img src={copy} alt="copy"  className='opacity-65'/>
-                    Copy
-                </Link>
-            </li>
-
-            <li>
-                <Link>
-                    <img src={copy} alt="copy"  className='opacity-65'/>
-                    Copy
                 </Link>
             </li>
 

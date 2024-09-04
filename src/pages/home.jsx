@@ -8,6 +8,7 @@ import PageNav from '../components/pagenav'
 import Qacard from '../components/quickaccesscard'
 import Sorting from '../components/sorting'
 import Sortoptions from '../components/sortoptions'
+import Loader from '../components/loader'
 
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
@@ -25,12 +26,11 @@ import fileactions from '../assets/images/threedots.svg'
 import cloud from '../assets/images/cloud.svg'
 
 const Test = () => {
-  const {user} = useAuth()
-  const navigate = useNavigate()
-  console.log(import.meta.env.VITE_CLOUD_API_ENDPOINT)
+  const {user, loading} = useAuth()
+  console.log(loading, user)
+  // if (loading) return <Loader/>
   return (
     <>
-    {!user.isAuthenticated?navigate('/home'):console.log()}
     <PageNav/>
     <section className='p-6 grid grid-cols-6 gap-4 mt-6 font-poppins'>
 

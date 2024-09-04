@@ -135,7 +135,7 @@ export const AuthProvider = ({children}) =>{
     }
 
     return (
-        <AuthContext.Provider value={{user,setuser, authenticate, createuser}}>
+        <AuthContext.Provider value={{user,setuser,loading, setloading, authenticate, createuser}}>
             {children}
         </AuthContext.Provider>
     )
@@ -146,14 +146,52 @@ export const useAuth = () =>{
 }
 
 export const RequireAuth = ({children}) => {
-    const {user, setuser} = useAuth()
-    if (!user.isAuthenticated)
-    {
-        return <Navigate to="/"/>
-    }
+    const {user, setuser, loading, setloading} = useAuth()
+    // setloading(true)
+
+    if (user.isAuthenticated)
+         return children;
     else
     {
-        return children
-    }
-    
+        return <Loading/>
+    // const session = localStorage.getItem('mc_lb')
+    // if (session === null) 
+    // {
+    //     setloading(false)
+    //     setuser({isAuthenticated: false, email: null, fullname: null}); return <Navigate to="/"/>
+    // }
+
+    // let params = {
+    //     session_id: session
+    // }
+
+    // let response = fetch(
+    //     API + "checksession/",
+    //     {
+    //         method: "post",
+    //         headers:
+    //         {
+    //             "content-type": "application/json",
+    //             "Authorization": "Token " + TOKEN
+    //         },
+    //         body: JSON.stringify(params),
+    //     }
+    // )
+    // response.then(e=>{
+    //     e.json().then(j=>{
+    //         if (j['status'] === "success")
+    //         {
+    //             setloading(false)
+    //             setuser({isAuthenticated: true, email: j['email'], fullname: j['first_name']+' '+j['last_name']})
+    //             return children
+    //         }
+    //         else
+    //         {
+    //             setloading(false)
+    //             setuser({isAuthenticated: false, email: null, fullname: null})
+    //             return <Navigate to="/"/>
+    //         }
+    //     })
+    // })    
+}
 }
