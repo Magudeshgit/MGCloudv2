@@ -6,10 +6,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import FileUploading from './fileuploading'
 
 const UploadNotification = (props) => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
     const [status, setstatus] = useState(true)
-
-    if (!status) return <></>
+    useEffect(()=>{
+      console.log(props.drawerdata)
+    })
+    if (!status || props.filecount === 0) return <></>
   return (
 <>
 <div id="toast-undo" class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-md dark:text-gray-400 dark:bg-gray-800 absolute bottom-6 right-6" role="alert">
@@ -59,7 +61,7 @@ const UploadNotification = (props) => {
                 </div>
 
                 <div className="relative mt-6 flex flex-col px-4 sm:px-6 gap-4">
-                  {props.drawerdata.map(file=> <FileUploading filename={file.filename} filesize={file.filesize} loaded={file.loaded} fileprogress={file.fileprogress}/>)}
+                  {props.drawerdata.map(file=><FileUploading filename={file.filename} filesize={file.filesize} loaded={file.loaded} fileprogress={file.fileprogress} abortcontrol={file.abortcontrol}/>)}
                 </div>
               </div>
             </DialogPanel>

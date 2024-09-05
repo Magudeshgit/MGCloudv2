@@ -29,7 +29,8 @@ export function UploadFiles(files, stateupdate) {
             filename: file.name,
             filesize: formatBytes(file.size),
             loaded: 0,
-            fileprogress: 0
+            fileprogress: 0,
+            abortcontrol: null
         })
     })
     stateupdate({
@@ -49,15 +50,39 @@ export function UploadFiles(files, stateupdate) {
         
         getSignedUrl(s3, command, {expiresIn: 3600})
         .then(p=>{
+            const abc = new AbortController()
+            const uploadsignal = abc.signal
+            uploadsignal.onabort = ()=>{
+                file_array.pop(file_array.findIndex(e=>e.filename === element.name))
+                stateupdate({
+                    show: true,
+                    filecount: files.length - 1,
+                    files: file_array
+                })
+            }
             axios.put(p, element, {
                 headers: {
                     "Content-Type": element.type
                 },
+                signal: uploadsignal,
                 onUploadProgress: (pe)=>{
                     let Inprogress_file = file_array[file_array.findIndex(e=>e.filename === element.name)]
-                    Inprogress_file.loaded = formatBytes(pe.loaded)
                     Inprogress_file.fileprogress = pe.progress * 100
-                    console.log(Inprogress_file)
+                    if (Inprogress_file.fileprogress === 100)
+                    {
+                        let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
+                        console.log(Completed_file)
+                        console.log('remaining', file_array)
+                        stateupdate(
+                            {
+                                show: true,
+                                filecount: files.length - 1,
+                                files: file_array
+                            }
+                        )
+                    }
+                    Inprogress_file.loaded = formatBytes(pe.loaded)
+                    Inprogress_file.abortcontrol = abc
                     stateupdate(
                         {
                             show: true,
@@ -66,11 +91,27 @@ export function UploadFiles(files, stateupdate) {
                         }
                     )
                 }
-            }).then(k=>console.log(k))
+            }).then(resp=>{
+                let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
+                console.log(Completed_file)
+                console.log('remaining', file_array)
+                stateupdate(
+                    {
+                        show: true,
+                        filecount: files.length - 1,
+                        files: file_array
+                    }
+                )
+            }).catch(err=>{
+                if (err.code === 'ERR_CANCELED')
+                {
+                    console.log('Upload Cancelled')
+                }
+            })
             // let ft =fetch(p, {method: "PUT", body: fr.result})
             // ft.then(o=>console.log(o.ok))
             
-        })
+        }).then(console.log("ALL FILES UPLOADED!"))
     }
 }
 

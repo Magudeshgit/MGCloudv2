@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { getUserFiles } from '../mgc_helper'
 
 // Statics
 import folder from '../assets/images/folder2.svg'
@@ -21,10 +23,15 @@ import Uploadbtn from '../components/uploadbtn'
 import Fileactions from '../components/fileactions'
 import Statusdrawer from '../components/statusdrawer'
 import UploadNotification from '../components/uploadnotification'
-import { Link } from 'react-router-dom'
+import { useAuth } from '../authcontext'
 
 
 const Files = () => {
+    const {user} = useAuth()
+    const [filedata, setfiledata] = useState([])
+    useEffect(()=>{
+        getUserFiles(user.uid).then(f=>setfiledata(f))
+    },[])
   return (
     <>
         <PageNav/>
@@ -86,40 +93,22 @@ const Files = () => {
                     Folders
                 </td>
                 </tr>
-
-                <tr className='hover:shadow-md'>
-                <td className='flex items-end gap-1'>
-                    <img src={document} alt="folder" className='opacity-85'/>
-                    Resume.docx
-                </td>
-                <td className='text-gray-500'>Private</td>
-                <td className='text-gray-500'>Aug, 16, 2024</td>
-                <td className='text-gray-500'>14KB</td>
-                <td className='text-gray-500'>
-                    <Fileactions/>
-                    {/* <img src={fileactions} alt="fileactions" className='w-4'/> */}
-                </td>
-                </tr>
-
-                <tr>
-                <td className='flex items-end gap-1'>
-                    <img src={audio} alt="folder" className='opacity-85'/>
-                    Thani Vazhi.mp4
-                </td>
-                <td className='text-gray-500'>Private</td>
-                <td className='text-gray-500'>Aug, 16, 2024</td>
-                <td className='text-gray-500'>7.2MB</td>
-                </tr>
-
-                <tr>
-                <td className='flex items-end gap-1'>
-                    <img src={picture} alt="folder" className='opacity-85'/>
-                    Scenary.png
-                </td>
-                <td className='text-gray-500'>Public</td>
-                <td className='text-gray-500'>Aug, 16, 2024</td>
-                <td className='text-gray-500'>1.2MB</td>
-                </tr>
+                
+                {filedata.map(file=>{
+                    <tr className='hover:shadow-md'>
+                    <td className='flex items-end gap-1'>
+                        <img src={document} alt="folder" className='opacity-85'/>
+                        {file.filename}
+                    </td>
+                    <td className='text-gray-500'>Private</td>
+                    <td className='text-gray-500'>{file.date_created}</td>
+                    <td className='text-gray-500'>{file.filesize}</td>
+                    <td className='text-gray-500'>
+                        <Fileactions/>
+                        {/* <img src={fileactions} alt="fileactions" className='w-4'/> */}
+                    </td>
+                    </tr>
+                })}
                
             </tbody>
             </table>

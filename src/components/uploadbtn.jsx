@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { UploadFiles } from '../helper'
+import { UploadFiles } from '../r2_helper'
 
 import add from '../assets/images/add.svg'
 import mgsecure from '../assets/images/mgsecure.svg'
@@ -23,11 +23,14 @@ const Uploadbtn = () => {
                 filename: null,
                 filesize: null,
                 loaded: null,
-                fileprogress: null
+                fileprogress: null,
+                abortcontrol: null
             }
         ]
     })
-    
+    useEffect(()=>{
+        console.log(showstatus)
+    }, [showstatus])
     const dropdownref = useRef(null)
 
     function filesupload() {
@@ -37,8 +40,8 @@ const Uploadbtn = () => {
         fileint.click()
 
         fileint.onchange = (e)=>{
-            console.log(e.target.files)
-            // UploadFiles(e.target.files, Setshowstatus)
+            // console.log(e.target.files)
+            UploadFiles(e.target.files, Setshowstatus)
         }
         dropdownref.current.removeAttribute('open')
     }
@@ -51,7 +54,8 @@ const Uploadbtn = () => {
         fileint.click()
 
         fileint.onchange = (e)=>{
-            console.log(e.target.files)
+            // console.log(e.target.files)
+            UploadFiles(e.target.files, Setshowstatus)
         }
         dropdownref.current.removeAttribute('open')
     }
@@ -84,7 +88,7 @@ const Uploadbtn = () => {
         </li>
     </ul>
     </details>
-    {showstatus.show?<UploadNotification filecount={showstatus.filecount} drawerdata={showstatus.files}/>:<></>}
+    {showstatus.show?<UploadNotification filecount={showstatus.files.length} drawerdata={showstatus.files}/>:<></>}
     </>
   )
 }

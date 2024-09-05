@@ -3,11 +3,11 @@ import { useNavigate, Navigate } from "react-router-dom"
 import Loading from "./pages/loading"
 
 // const API = "https://mgauthsphere.pythonanywhere.com/api/"
-const API = "http://127.0.0.1:8000/api/"
+const API = "http://127.0.0.1:8000/api/security/"
 // const API = "http://192.168.129.91:8000/api/"
 
 // Secret
-const TOKEN = "5fcec46340e08e0a9d1c0a36594bef36bbe300e4"//"a3e2935779c2f87c61ab3f54fc953944e94ebf27"
+const TOKEN = import.meta.env.VITE_MGC_TOKEN//"a3e2935779c2f87c61ab3f54fc953944e94ebf27"
 
 const AuthContext = createContext(null)
 
@@ -42,8 +42,13 @@ export const AuthProvider = ({children}) =>{
                 if (f['status'] === "success")
                 {
                     localStorage.setItem('mc_lb', f['session_id'])
-                    localStorage.setItem('pe_es', f['session_expiry'])
-                    setuser({isAuthenticated: true, email: f['email']})
+                    localStorage.setItem('uid', f['user_id'])
+                    setuser({
+                        isAuthenticated: true, 
+                        email: f['email'], 
+                        fullname: f['first_name']+' '+f['last_name'],
+                        uid: f['user_id']
+                    })
                     navigate('/home')
                 }
                 return f
@@ -70,7 +75,13 @@ export const AuthProvider = ({children}) =>{
                 if (e['status'] === 'success')
                 {
                     localStorage.setItem("session_id", e['data']['session_id'])
-                    setuser({isAuthenticated: true, email: e['data']['email']})
+                    setuser({
+                        isAuthenticated: true, 
+                        email: j['data']['email'], 
+                        fullname: j['data']['first_name']+' '+j['data']['last_name'],
+                        uid: j['data']['user_id']
+                    })
+                    setuser({isAuthenticated: true, mail: e['data']['email'], userid: e['data']['user_id']})
                 }
                 return e
             })
@@ -118,7 +129,12 @@ export const AuthProvider = ({children}) =>{
                 if (j['status'] === "success")
                 {
                     setloading(false)
-                    setuser({isAuthenticated: true, email: j['email'], fullname: j['first_name']+' '+j['last_name']})
+                    setuser({
+                        isAuthenticated: true, 
+                        email: j['user']['mail'], 
+                        fullname: j['user']['firstname']+' '+j['user']['lastname'],
+                        uid: j['user']['user_id']
+                    })
                     return navigate('/home')
                 }
                 else
@@ -154,44 +170,5 @@ export const RequireAuth = ({children}) => {
     else
     {
         return <Loading/>
-    // const session = localStorage.getItem('mc_lb')
-    // if (session === null) 
-    // {
-    //     setloading(false)
-    //     setuser({isAuthenticated: false, email: null, fullname: null}); return <Navigate to="/"/>
-    // }
-
-    // let params = {
-    //     session_id: session
-    // }
-
-    // let response = fetch(
-    //     API + "checksession/",
-    //     {
-    //         method: "post",
-    //         headers:
-    //         {
-    //             "content-type": "application/json",
-    //             "Authorization": "Token " + TOKEN
-    //         },
-    //         body: JSON.stringify(params),
-    //     }
-    // )
-    // response.then(e=>{
-    //     e.json().then(j=>{
-    //         if (j['status'] === "success")
-    //         {
-    //             setloading(false)
-    //             setuser({isAuthenticated: true, email: j['email'], fullname: j['first_name']+' '+j['last_name']})
-    //             return children
-    //         }
-    //         else
-    //         {
-    //             setloading(false)
-    //             setuser({isAuthenticated: false, email: null, fullname: null})
-    //             return <Navigate to="/"/>
-    //         }
-    //     })
-    // })    
-}
+    }
 }

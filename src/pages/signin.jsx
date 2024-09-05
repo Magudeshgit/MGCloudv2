@@ -107,7 +107,7 @@ const Signin = () => {
             className="flex w-full gap-3 items-center justify-center rounded-md bg-[#414141] px-3 py-1.5 text-md font-semibold leading-6 text-white shadow-sm hover:bg-black transition-colors"
           >
             Sign in
-            {loading?<Loader/>:<></>}
+            {loading?<Loader size="w-4 h-4"/>:<></>}
           </button>
         </div>
       </form>

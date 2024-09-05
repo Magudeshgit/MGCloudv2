@@ -152,7 +152,7 @@ const Signup = () => {
           >
             Signup
             {
-              loading?<Loader/>:<></>
+              loading?<Loader size="w-3 h-4"/>:<></>
             }
           </button>
         </div>
