@@ -1,11 +1,12 @@
-import React from 'react'
-
+import React, {useState, useEffect} from 'react'
+import { getUserDirectories } from '../mgc_helper'
+import { useAuth } from '../authcontext'
 // Statics
 import folder from '../assets/images/folder2.svg'
 import mgsecure from '../assets/images/mgsecure.svg'
 import add from '../assets/images/add.svg'
 import upload from '../assets/images/upload.svg'
-
+import { FolderIcon } from '@heroicons/react/20/solid'
 // Components
 import PageNav from '../components/pagenav'
 import Uploadbtn from '../components/uploadbtn'
@@ -13,6 +14,12 @@ import Folderactions from '../components/folderactions'
 
 
 const Folders = () => {
+    const {user} = useAuth()
+    const [filedata, setfiledata] = useState([])
+    useEffect(()=>{
+        getUserDirectories(user.uid).then(f=>setfiledata(f))
+        console.log(filedata)
+    },[])
   return (
     <>
         <PageNav/>
@@ -75,6 +82,23 @@ const Folders = () => {
                 <td className='text-gray-500'>Private</td>
                 <td className='text-gray-500'>12, July, 2024</td>
                 </tr>
+                {console.log(filedata)}
+                {filedata.map(file=>(
+                    <tr className='hover:shadow-md'>
+                    <td className='flex items-end gap-1'>
+                        {/* <img src={document} alt="folder" className='opacity-85'/> */}
+                        <FolderIcon className='w-4 h-4'/>
+                        {file.dirName}
+                    </td>
+                    <td className='text-gray-500'>Private</td>
+                    <td className='text-gray-500'>{file.createdOn}</td>
+                    <td className='text-gray-500'>{file.diskSize}</td>
+                    <td className='text-gray-500'>  
+                        <Folderactions/>  
+                        {/* <img src={fileactions} alt="fileactions" className='w-4'/> */}
+                    </td>
+                    </tr>
+                ))}
                
             </tbody>
             </table>

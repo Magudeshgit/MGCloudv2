@@ -86,21 +86,13 @@ const Files = () => {
                 </tr>
             </thead>
             <tbody >
-
-                <tr>
-                <td className='flex items-end gap-1 font-semibold'>
-                    <img src={folder} alt="folder" />
-                    Folders
-                </td>
-                </tr>
-                
-                {filedata.map(file=>{
+                {filedata.map(file=>(
                     <tr className='hover:shadow-md'>
                     <td className='flex items-end gap-1'>
                         <img src={document} alt="folder" className='opacity-85'/>
                         {file.filename}
                     </td>
-                    <td className='text-gray-500'>Private</td>
+                    <td className='text-gray-500'>{file.isShared?'Public':'Private'}</td>
                     <td className='text-gray-500'>{file.date_created}</td>
                     <td className='text-gray-500'>{file.filesize}</td>
                     <td className='text-gray-500'>
@@ -108,7 +100,7 @@ const Files = () => {
                         {/* <img src={fileactions} alt="fileactions" className='w-4'/> */}
                     </td>
                     </tr>
-                })}
+                ))}
                
             </tbody>
             </table>

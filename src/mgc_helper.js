@@ -17,3 +17,19 @@ export function getUserFiles(userid) {
     })
     return filerequest
 }
+
+export function getUserDirectories(userid) {
+    const folderrequest = new Promise((resolve, reject)=>{
+        axios.post(cloudapi+'userdirectories/',
+            {
+                userid: userid
+            },
+            {
+                headers: {
+                    Authorization: `Token ${import.meta.env.VITE_MGC_TOKEN}`
+                }
+            }
+        ).then(e=>{return resolve(e.data)} )
+    })
+    return folderrequest
+}
