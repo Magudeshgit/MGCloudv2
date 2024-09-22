@@ -33,3 +33,36 @@ export function getUserDirectories(userid) {
     })
     return folderrequest
 }
+
+export function getOauthUrl(){
+
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}integrations/`, {},{
+            headers: {
+                Authorization: `Token ${import.meta.env.VITE_MGC_TOKEN}`
+            }
+    }).then(e=>{console.log(e); return resolve(e.data)})
+})
+    // const response = axios.post(`${cloudapi}/integrations/`)
+    return urlrequest
+}
+
+export function getOauthToken(code){
+
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}/oauthtoken/`, {
+            "code": code
+        },{
+            headers: {
+                Authorization: `Token ${import.meta.env.VITE_MGC_TOKEN}`
+            }
+    }).then(e=>{console.log(e); return resolve(e.data)})
+})
+    // const response = axios.post(`${cloudapi}/integrations/`)
+    return urlrequest
+}
+
+export function fetchPresignedURL(files)
+{
+    
+}

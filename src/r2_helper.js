@@ -2,6 +2,7 @@ import {
     S3Client,
     PutObjectCommand,
     ListObjectsV2Command,
+    GetObjectAttributesCommand,
   } from "@aws-sdk/client-s3";
 import { formatBytes } from "./formatters";
 import axios from "axios";
@@ -50,6 +51,7 @@ export function UploadFiles(files, stateupdate) {
         
         getSignedUrl(s3, command, {expiresIn: 3600})
         .then(p=>{
+            console.log("Signed URL", p)
             const abc = new AbortController()
             const uploadsignal = abc.signal
             uploadsignal.onabort = ()=>{
@@ -116,11 +118,45 @@ export function UploadFiles(files, stateupdate) {
 }
 
 
+// export function getObject(){
+//     const command  = new GetObjectAttributesCommand({ 
+//         Bucket: BUCKETNAME,
+//         Key: ,
+//     })
 
+//     getSignedUrl(s3, command, {expiresIn: 3600})
+//         .then(p=>{
 
-// const command = new ListObjectsV2Command({
-//     Bucket: "mgcloud",
-//     MaxKeys: 500
-// })
-
-// s3.send(command).then(e=>console.log(e))
+//     axios.put(p, element, {
+//         headers: {
+//             "Content-Type": element.type
+//         },
+//         signal: uploadsignal,
+//         onUploadProgress: (pe)=>{
+//             let Inprogress_file = file_array[file_array.findIndex(e=>e.filename === element.name)]
+//             Inprogress_file.fileprogress = pe.progress * 100
+//             if (Inprogress_file.fileprogress === 100)
+//             {
+//                 let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
+//                 console.log(Completed_file)
+//                 console.log('remaining', file_array)
+//                 stateupdate(
+//                     {
+//                         show: true,
+//                         filecount: files.length - 1,
+//                         files: file_array
+//                     }
+//                 )
+//             }
+//             Inprogress_file.loaded = formatBytes(pe.loaded)
+//             Inprogress_file.abortcontrol = abc
+//             stateupdate(
+//                 {
+//                     show: true,
+//                     filecount: files.length,
+//                     files: file_array
+//                 }
+//             )
+//         }
+//     })
+// }

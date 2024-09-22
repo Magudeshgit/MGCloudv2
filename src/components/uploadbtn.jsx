@@ -28,6 +28,9 @@ const Uploadbtn = () => {
             }
         ]
     })
+
+    const [dropdown, setdropdown] = useState(false)
+
     useEffect(()=>{
         console.log(showstatus)
     }, [showstatus])
@@ -62,12 +65,14 @@ const Uploadbtn = () => {
 
   return (
     <>
-    <details className="dropdown dropdown-end" ref={dropdownref}>
-    <summary className="btn m-1 py-0 font-poppins text-gray-600 border border-gray-300  ">
-        Upload
-        <img src={upload} alt="add" className=''/>
-    </summary>
-    <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow font-poppins">
+    <div className='relative'>
+    <button className='font-medium border border-gray-300 rounded-lg px-4 py-2 flex text-sm items-center text-gray-600 hover:bg-white hover:text-black hover:invert transition-all duration-300 ease-in-out'
+            onClick={()=>setdropdown(!dropdown)}
+    >
+                    <p className='font-semibold'>Upload</p>
+                    <img src={add} alt="add" className=''/>
+    </button>
+    {dropdown?<ul className="menu opacity-100 dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow font-poppins absolute right-0 top-12 transition-all duration-300 ease-in-out">
         <li>
             <button onClick={filesupload}>
                 <img src={fileico} className='opacity-65 w-4'/>
@@ -86,8 +91,8 @@ const Uploadbtn = () => {
                 MGSecure Upload
             </Link>
         </li>
-    </ul>
-    </details>
+    </ul>:<></>}
+    </div>
     {showstatus.show?<UploadNotification filecount={showstatus.files.length} drawerdata={showstatus.files}/>:<></>}
     </>
   )

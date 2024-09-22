@@ -1,6 +1,8 @@
 //React Imports
 import { Route, Routes } from 'react-router-dom'
 import { AuthProvider, RequireAuth } from './authcontext'
+import Loading  from './pages/loading'
+import OauthLoading from './pages/oauthloading'
 
 // Component and Page imports
 import Home from './pages/landing'
@@ -13,6 +15,7 @@ import Mgsecure from './pages/mgsecure'
 import Trash from './pages/trash'
 import Favourites from './pages/favourites'
 import Files from './pages/files'
+import Integrations from './pages/integrations'
 
 function App() {
   return (
@@ -22,10 +25,14 @@ function App() {
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/signin' element={<Signin/>}/>
     
-        <Route path='/home' element={<RequireAuth><Test/></RequireAuth>}/>
+        <Route path='/home' element={<RequireAuth><Files/></RequireAuth>}/>
         <Route path='/upload' element={<RequireAuth><NewUpload/></RequireAuth>}/>
 
         <Route path='/files' element={<RequireAuth><Files/></RequireAuth>}/>
+
+        <Route path='/integrations' element={<RequireAuth><Integrations/></RequireAuth>}/>
+        <Route path='/integrations/oauth/callback' element={<OauthLoading/>}/>
+
         <Route path='/favourites' element={<RequireAuth><Favourites/></RequireAuth>}/>
         <Route path='/folders' element={<RequireAuth><Folders/></RequireAuth>}/>
         <Route path='/mgsecure' element={<RequireAuth><Mgsecure/></RequireAuth>}/>

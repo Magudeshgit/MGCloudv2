@@ -11,9 +11,9 @@ import { Link } from 'react-router-dom'
 const Fileactions = () => {
 
   return (
-    <details className="dropdown dropdown-left">
-        <summary className="btn p-4 h-0 min-h-0 bg-white border-none shadow-none">
-            <img src={fileactions} alt="fileactions" className='w-4'/>
+    <details className="dropdown dropdown-left bg-none">
+        <summary className="btn flex items-center justify-center">
+            <img src={fileactions} alt="fileactions" className='w-4 h-4'/>
         </summary>
         <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
             <li>

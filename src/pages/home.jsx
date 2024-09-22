@@ -9,21 +9,16 @@ import Qacard from '../components/quickaccesscard'
 import Sorting from '../components/sorting'
 import Sortoptions from '../components/sortoptions'
 import Loader from '../components/loader'
+import Fileactions from '../components/fileactions'
+import Uploadbtn from '../components/uploadbtn'
 
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
-
-import fav from '../assets/images/fav.svg'
-import lock from '../assets/images/lock.svg'
-import folder from '../assets/images/folder.svg'
-import trash from '../assets/images/trash.svg'
-
-import fileico from '../assets/images/fileico.svg'
-import sharing from '../assets/images/share.svg'
-import date from '../assets/images/date.svg'
-import mgsecure from '../assets/images/mgsecure.svg'
-import actions from '../assets/images/actions.svg'
+import shared from '../assets/images/shared.svg'
 import fileactions from '../assets/images/threedots.svg'
-import cloud from '../assets/images/cloud.svg'
+
+import ppt from '../assets/images/ppt.svg'
+import T1 from '../components/t1'
+import add from '../assets/images/add.svg'
 
 const Test = () => {
   const {user, loading} = useAuth()
@@ -31,88 +26,51 @@ const Test = () => {
   // if (loading) return <Loader/>
   return (
     <>
+    <T1/>
     <PageNav/>
-    <section className='p-6 grid grid-cols-6 gap-4 mt-6 font-poppins'>
-
-      <section className='lg:col-span-4 col-span-full p-6 border border-gray-200 rounded-lg min-w-full'>
+    <section className='p-6 gap-4 ml-56'>
+      <section className='p-6 border border-gray-200 rounded-lg min-w-full'>
         <div className='flex justify-between items-center'>
         <p className='font-bold text-2xl'>Recent Files</p>
-        <div className='flex gap-4'>
-          {/* <Sorting/>
-          <Sortoptions/> */}
-          <Link to="/files">
-            <Button to className='p-2 flex items-center gap-2 bg-gray-100 rounded-md'>
-              <p className='text-xs font-poppins font-medium'>All Files</p>
-              <ArrowRightIcon className='w-4 h-4'/>
-            </Button>
-          </Link>
         </div>
-        </div>
-        <div className="overflow-x-auto mt-5">
-    <table className="table">
-      {/* head */}
-      <thead>
-      <tr>
-                    <th>
-                        <div className='flex gap-1'>
-                        <img src={fileico} className='w-4 opacity-65'/>
-                        File name
-                        </div>
-                    </th>
-                    <th>
-                        <div className='flex gap-1'>
-                        <img src={sharing} className='w-4 opacity-65'/>
-                        Sharing
-                        </div>
-                    </th>
-                    <th>
-                        <div className='flex gap-1'>
-                        <img src={date} className='w-4 opacity-65'/>
-                        Date added
-                        </div>
-                    </th>
-                    <th>
-                        <div className='flex gap-1'>
-                        <img src={cloud} className='w-4 opacity-65'/>
-                        Size
-                        </div>
-                    </th>
+        <div className="mt-5 flex flex-col gap-2">
+              <div className='bg-[#fff] shadow rounded-md border w-full p-6 flex justify-between items-center'>
+                <div className='flex items-center gap-2'>
+                  <img src={ppt} className='opacity-65 w-12 h-12'/>
+                  <div className='flex flex-col'>
+                    <p className='text-base font-bold'>Presentation.pptx</p>
+                    <p className='text-xs text-gray-500'>19, Sept, 2024</p>
+                    <div className='flex gap-1 items-center mt-1'>
+                      <img src={shared} alt="" className='w-4 h-4 opacity-65'/>
+                      <p className='text-xs text-gray-500'>Shared</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Fileactions/>
+                </div>
+              </div>
 
-                    <th>
-                        <div className='flex gap-1'>
-                        <img src={actions} className='w-4 opacity-65'/>
-                        Actions
-                        </div>
-                    </th>
-                </tr>
-      </thead>
-      <tbody>
-        {/* row 1 */}
-        <tr>
-          <td>Cy Ganderton</td>
-          <td>Quality Control Specialist</td>
-          <td>Blue</td>
-        </tr>
-        {/* row 2 */}
-        <tr>
-          <td>Hart Hagerty</td>
-          <td>Desktop Support Technician</td>
-          <td>Purple</td>
-        </tr>
-        {/* row 3 */}
-        <tr>
-          <td>Brice Swyre</td>
-          <td>Tax Accountant</td>
-          <td>Red</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+              <div className='bg-[#fff] shadow rounded-md border w-full p-6 flex justify-between items-center'>
+                <div className='flex items-center gap-2'>
+                  <img src={ppt} className='opacity-65 w-12 h-12'/>
+                  <div className='flex flex-col'>
+                    <p className='text-base font-bold'>Presentation.pptx</p>
+                    <p className='text-xs text-gray-500'>19, Sept, 2024</p>
+                    <div className='flex gap-1 items-center mt-1'>
+                      <img src={shared} alt="" className='w-4 h-4 opacity-65'/>
+                      <p className='text-xs text-gray-500'>Shared</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Fileactions/>
+                </div>
+              </div>
+        </div>
       </section>
 
-      {/* Statistics */}
-
-      <section className='lg:col-start-5 col-span-full lg:row-start-1 lg:row-span-2 lg:col-span-2 p-6 border border-gray-200 rounded-lg min-w-full'>
+      {/* <section className='lg:col-start-5 col-span-full lg:row-start-1 lg:row-span-2 lg:col-span-2 p-6 border border-gray-200 rounded-lg min-w-full'>
         <p className='font-bold text-xl'>Usage</p>
         <div className='flex flex-col mt-6'>
           <div>
@@ -135,7 +93,7 @@ const Test = () => {
             <progress className="progress progress-info w-full" value={0} max="100"></progress>
           </div>
         </div>
-      </section>
+      </section> */}
 
     </section>
     </>

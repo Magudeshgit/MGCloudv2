@@ -90,6 +90,7 @@ export const AuthProvider = ({children}) =>{
 
     const checksession = () => {
         // Setting loading status
+        console.log(window.location.pathname)
         setloading(true)
 
 
@@ -135,13 +136,13 @@ export const AuthProvider = ({children}) =>{
                         fullname: j['user']['firstname']+' '+j['user']['lastname'],
                         uid: j['user']['user_id']
                     })
-                    return navigate('/home')
+                    return navigate(window.location.pathname)
                 }
                 else
                 {
                     setloading(false)
                     setuser({isAuthenticated: false, email: null, fullname: null})
-                    return navigate('/')
+                    return navigate(window.location.pathname)
                 }
             })
         })

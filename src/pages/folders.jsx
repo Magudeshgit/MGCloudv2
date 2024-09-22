@@ -11,6 +11,7 @@ import { FolderIcon } from '@heroicons/react/20/solid'
 import PageNav from '../components/pagenav'
 import Uploadbtn from '../components/uploadbtn'
 import Folderactions from '../components/folderactions'
+import T1 from '../components/t1'
 
 
 const Folders = () => {
@@ -22,16 +23,17 @@ const Folders = () => {
     },[])
   return (
     <>
+        <T1/>
         <PageNav/>
-        <section className='p-6 bg-gray-100 min-h-full'>
+        <section className='p-6 gap-4 ml-56'>
             <div className='flex w-full justify-between items-center'>
                 <p className='font-bold text-xl'>My Folders</p>
                 <div className='flex gap-2'>
                     <Uploadbtn/>
-                    <button className='btn m-1 py-0 font-poppins text-gray-600 border border-gray-300'>
+                    {/* <button className='btn m-1 py-0 font-poppins text-gray-600 border border-gray-300'>
                         Create Folder
                         <img src={add} alt="add" className=''/>
-                    </button>
+                    </button> */}
                 </div>
             </div>
         <div className="overflow-x-auto mt-5 bg-white rounded-md shadow-md">
