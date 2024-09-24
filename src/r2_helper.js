@@ -7,6 +7,7 @@ import {
 import { formatBytes } from "./formatters";
 import axios from "axios";
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { fetchPresignedURL } from "./mgc_helper";
 
 const s3 = new S3Client({
     endpoint: import.meta.env.VITE_CLOUD_API_ENDPOINT,
@@ -25,6 +26,7 @@ export function UploadFiles(files, stateupdate) {
     
     // Pre initialzing the state variable with the file data for the drawer compoenent.
     const file_array = []
+    const filename_array=[]
     Array.from(files).map(file=>{
         file_array.push({
             filename: file.name,
@@ -33,25 +35,21 @@ export function UploadFiles(files, stateupdate) {
             fileprogress: 0,
             abortcontrol: null
         })
+
+        filename_array.push(file.name)
     })
     stateupdate({
         show: true,
         filecount: files.length,
         files: file_array
     })
-
     // Reassigning the state variable with the file progress for the drawer component.
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
+    fetchPresignedURL(filename_array).then(signedurls=>{
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            console.log(signedurls[element.name])
 
-        const command  = new PutObjectCommand({ 
-            Bucket: BUCKETNAME,
-            Key: element.name,
-        })
-        
-        getSignedUrl(s3, command, {expiresIn: 3600})
-        .then(p=>{
-            console.log("Signed URL", p)
+            // Upload Cancel Handler
             const abc = new AbortController()
             const uploadsignal = abc.signal
             uploadsignal.onabort = ()=>{
@@ -62,7 +60,9 @@ export function UploadFiles(files, stateupdate) {
                     files: file_array
                 })
             }
-            axios.put(p, element, {
+            axios.put(
+                signedurls[element.name], //Get Signed url from object
+                element, {
                 headers: {
                     "Content-Type": element.type
                 },
@@ -110,11 +110,8 @@ export function UploadFiles(files, stateupdate) {
                     console.log('Upload Cancelled')
                 }
             })
-            // let ft =fetch(p, {method: "PUT", body: fr.result})
-            // ft.then(o=>console.log(o.ok))
-            
-        }).then(console.log("ALL FILES UPLOADED!"))
-    }
+        }
+    })
 }
 
 

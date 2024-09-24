@@ -1,6 +1,7 @@
 // MGCloud API Logging and Retrieving Operations
 const cloudapi = 'http://127.0.0.1:8000/api/cloud/'
 import axios from "axios"
+const MGC_SECRET = import.meta.env.VITE_MGC_TOKEN
 
 export function getUserFiles(userid) {
     const filerequest = new Promise((resolve, reject)=>{
@@ -10,7 +11,7 @@ export function getUserFiles(userid) {
             },
             {
                 headers: {
-                    Authorization: `Token ${import.meta.env.VITE_MGC_TOKEN}`
+                    Authorization: `Token ${MGC_SECRET}`
                 }
             }
         ).then(e=>{return resolve(e.data)} )
@@ -26,7 +27,7 @@ export function getUserDirectories(userid) {
             },
             {
                 headers: {
-                    Authorization: `Token ${import.meta.env.VITE_MGC_TOKEN}`
+                    Authorization: `Token ${MGC_SECRET}`
                 }
             }
         ).then(e=>{return resolve(e.data)} )
@@ -39,7 +40,7 @@ export function getOauthUrl(){
     const urlrequest = new Promise((resolve, reject)=>{
         axios.post(`${cloudapi}integrations/`, {},{
             headers: {
-                Authorization: `Token ${import.meta.env.VITE_MGC_TOKEN}`
+                Authorization: `Token ${MGC_SECRET}`
             }
     }).then(e=>{console.log(e); return resolve(e.data)})
 })
@@ -54,7 +55,7 @@ export function getOauthToken(code){
             "code": code
         },{
             headers: {
-                Authorization: `Token ${import.meta.env.VITE_MGC_TOKEN}`
+                Authorization: `Token ${MGC_SECRET}`
             }
     }).then(e=>{console.log(e); return resolve(e.data)})
 })
@@ -64,5 +65,15 @@ export function getOauthToken(code){
 
 export function fetchPresignedURL(files)
 {
-    
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}generatepresignedurl/`,{
+            "files": files
+        },
+        {
+            headers: {
+                Authorization: `Token ${MGC_SECRET}`
+            }       
+        }).then(e=>{console.log(e); resolve(e.data)})
+    })
+    return urlrequest
 }
