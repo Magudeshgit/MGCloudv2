@@ -1,32 +1,18 @@
-import {
-    S3Client,
-    PutObjectCommand,
-    ListObjectsV2Command,
-    GetObjectAttributesCommand,
-  } from "@aws-sdk/client-s3";
-import { formatBytes } from "./formatters";
 import axios from "axios";
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { fetchPresignedURL } from "./mgc_helper";
+import { fetchPresignedURL, userFilesAdded } from "./mgc_helper";
+import { formatBytes } from "./formatters";
 
-const s3 = new S3Client({
-    endpoint: import.meta.env.VITE_CLOUD_API_ENDPOINT,
-    credentials: {
-        accessKeyId: import.meta.env.VITE_ACCESS_KEY_ID,
-        secretAccessKey: import.meta.env.VITE_SECRET_KEY,
-    },
-    region: "auto",
-
-})
-
-const BUCKETNAME = "mgcloud"
-
-export function UploadFiles(files, stateupdate) {
+// Handler for uploading files.
+export function UploadFiles(files, stateupdate, user) {
     console.log("Initiating Upload Sequence", files)
     
-    // Pre initialzing the state variable with the file data for the drawer compoenent.
+    // Primary Common file data array for handling upload/completed/progress operations
     const file_array = []
+    // Dedicated filename array for fetching presigned url only
     const filename_array=[]
+    // Dedicated File object to handle post upload operation which is intimate MGC API
+    const uploadcompletedarray = []
+
     Array.from(files).map(file=>{
         file_array.push({
             filename: file.name,
@@ -68,20 +54,22 @@ export function UploadFiles(files, stateupdate) {
                 },
                 signal: uploadsignal,
                 onUploadProgress: (pe)=>{
+                    console.log(pe)
                     let Inprogress_file = file_array[file_array.findIndex(e=>e.filename === element.name)]
                     Inprogress_file.fileprogress = pe.progress * 100
                     if (Inprogress_file.fileprogress === 100)
                     {
-                        let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
-                        console.log(Completed_file)
-                        console.log('remaining', file_array)
-                        stateupdate(
-                            {
-                                show: true,
-                                filecount: files.length - 1,
-                                files: file_array
-                            }
-                        )
+                        // let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
+                        // console.log(Completed_file)
+                        // console.log('remaining', file_array)
+                        // stateupdate(
+                        //     {
+                        //         show: true,
+                        //         filecount: files.length - 1,
+                        //         files: file_array
+                        //     }
+                        // )
+                        console.log(" 1Fileuploaded")
                     }
                     Inprogress_file.loaded = formatBytes(pe.loaded)
                     Inprogress_file.abortcontrol = abc
@@ -94,16 +82,20 @@ export function UploadFiles(files, stateupdate) {
                     )
                 }
             }).then(resp=>{
+                // File upload completed handler
                 let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
+                uploadcompletedarray.push(Completed_file)
                 console.log(Completed_file)
-                console.log('remaining', file_array)
-                stateupdate(
-                    {
-                        show: true,
-                        filecount: files.length - 1,
-                        files: file_array
-                    }
-                )
+                console.log('remaining', uploadcompletedarray)
+                userFilesAdded([Completed_file], user.uid).then(p=>{
+                    stateupdate(
+                        {
+                            show: true,
+                            filecount: files.length - 1,
+                            files: file_array
+                        }
+                    )
+                })
             }).catch(err=>{
                 if (err.code === 'ERR_CANCELED')
                 {
@@ -111,49 +103,19 @@ export function UploadFiles(files, stateupdate) {
                 }
             })
         }
+        console.log("Initiating Phase 2")
+        return true
     })
+
+    // Phase 2: Updating MGC api
+    // file_array.push({
+    //     filename: file.name,
+    //     filesize: formatBytes(file.size),
+    //     loaded: 0,
+    //     fileprogress: 0,
+    //     abortcontrol: null
+    // })
+    
+    console.log("Initiating Phase 2")
+    userFilesAdded(uploadcompletedarray, user.uid).then(g=>console.log(g))
 }
-
-
-// export function getObject(){
-//     const command  = new GetObjectAttributesCommand({ 
-//         Bucket: BUCKETNAME,
-//         Key: ,
-//     })
-
-//     getSignedUrl(s3, command, {expiresIn: 3600})
-//         .then(p=>{
-
-//     axios.put(p, element, {
-//         headers: {
-//             "Content-Type": element.type
-//         },
-//         signal: uploadsignal,
-//         onUploadProgress: (pe)=>{
-//             let Inprogress_file = file_array[file_array.findIndex(e=>e.filename === element.name)]
-//             Inprogress_file.fileprogress = pe.progress * 100
-//             if (Inprogress_file.fileprogress === 100)
-//             {
-//                 let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
-//                 console.log(Completed_file)
-//                 console.log('remaining', file_array)
-//                 stateupdate(
-//                     {
-//                         show: true,
-//                         filecount: files.length - 1,
-//                         files: file_array
-//                     }
-//                 )
-//             }
-//             Inprogress_file.loaded = formatBytes(pe.loaded)
-//             Inprogress_file.abortcontrol = abc
-//             stateupdate(
-//                 {
-//                     show: true,
-//                     filecount: files.length,
-//                     files: file_array
-//                 }
-//             )
-//         }
-//     })
-// }

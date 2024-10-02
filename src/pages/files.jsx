@@ -37,8 +37,32 @@ const Files = () => {
     useEffect(()=>{
         getUserFiles(user.uid).then(f=>setfiledata(f))
     },[])
+    const sortingarray=[]
+    // if (filedata.length>0)
+    // {
+    //     filedata.forEach(e=>{
+    //         let x=e
+    //         x.date_created = new Date(x.date_created)
+    //         sortingarray.push(x)
+    //     })
+    //     console.log("sortingarray",  sortingarray)
+    //     function dateSort(a,b)
+    //     {
+    //         if (a.date_created<b.date_created)
+    //         {
+    //             return 1
+    //         }
+    //         else
+    //         {
+    //             return -1
+    //         }
+    //     }
+    //     console.log("sorted", sortingarray.sort(dateSort))
+    // }
+
+
   return (
-    <>
+    <section className='max-h-[100vh]'>
          <T1/>
         <PageNav/>
         <section className='p-6 gap-4 ml-56 bg-[#F7F7F5]'>
@@ -53,7 +77,7 @@ const Files = () => {
                     <img src={add} alt="add" className=''/>
                 </button> */}
             </div>
-        <div className="overflow-x-auto mt-5 bg-white min-h-[70vh] rounded-md shadow-md">
+        <div className="overflow-x-auto mt-5 bg-white max-h-[70vh] rounded-md shadow-md">
             <table className="table">
             {/* head */}
             <thead className='min-w-[100%]'>
@@ -123,8 +147,7 @@ const Files = () => {
             </table>
         </div>
         </section>
-    </>
-
+    </section>
   )
 }
 

@@ -77,3 +77,22 @@ export function fetchPresignedURL(files)
     })
     return urlrequest
 }
+
+export function userFilesAdded(filesarray, userid)
+{
+    console.log("Phase 2")
+    console.log('sdf', filesarray)
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}adduserfiles/`, {
+            "userid": userid,
+            "files": filesarray
+        },
+        {
+            headers: {
+                Authorization: `Token ${MGC_SECRET}`
+            }
+        }
+    ).then(e=>{console.log(e);resolve(e)})
+    })
+    return urlrequest
+}

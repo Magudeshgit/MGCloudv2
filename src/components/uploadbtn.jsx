@@ -10,10 +10,10 @@ import upload from '../assets/images/upload.svg'
 import UploadNotification from './uploadnotification'
 
 import { Link } from 'react-router-dom'
-
-
+import { useAuth } from '../authcontext'
 
 const Uploadbtn = () => {
+    const { user } = useAuth()
     const [showstatus, Setshowstatus] = useState(
         {
             show: false,
@@ -30,13 +30,10 @@ const Uploadbtn = () => {
     })
 
     const [dropdown, setdropdown] = useState(false)
-
-    useEffect(()=>{
-        console.log(showstatus)
-    }, [showstatus])
     const dropdownref = useRef(null)
 
     function filesupload() {
+        setdropdown(false)
         const fileint = document.createElement('input')
         fileint.setAttribute('type', 'file')
         fileint.setAttribute('multiple', 'multiple')
@@ -50,6 +47,7 @@ const Uploadbtn = () => {
     }
 
     function folderupload() {
+        setdropdown(false)
         const fileint = document.createElement('input')
         fileint.setAttribute('type', 'file')
         fileint.setAttribute('webkitdirectory','webkitdirectory')
@@ -58,7 +56,7 @@ const Uploadbtn = () => {
 
         fileint.onchange = (e)=>{
             // console.log(e.target.files)
-            UploadFiles(e.target.files, Setshowstatus)
+            UploadFiles(e.target.files, Setshowstatus, user)
         }
         dropdownref.current.removeAttribute('open')
     }
