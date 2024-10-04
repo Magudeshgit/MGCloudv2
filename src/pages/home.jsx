@@ -17,7 +17,7 @@ import shared from '../assets/images/shared.svg'
 import fileactions from '../assets/images/threedots.svg'
 
 import ppt from '../assets/images/ppt.svg'
-import T1 from '../components/t1'
+import Navbar from '../components/navbar'
 import add from '../assets/images/add.svg'
 
 const Test = () => {
@@ -26,8 +26,7 @@ const Test = () => {
   // if (loading) return <Loader/>
   return (
     <>
-    <T1/>
-    <PageNav/>
+    <Navbar/>
     <section className='p-6 gap-4 ml-56'>
       <section className='p-6 border border-gray-200 rounded-lg min-w-full'>
         <div className='flex justify-between items-center'>

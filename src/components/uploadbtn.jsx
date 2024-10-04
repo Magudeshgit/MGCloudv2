@@ -12,7 +12,9 @@ import UploadNotification from './uploadnotification'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../authcontext'
 
-const Uploadbtn = () => {
+import { getUserFiles } from '../mgc_helper'
+
+const Uploadbtn = (props) => {
     const { user } = useAuth()
     const [showstatus, Setshowstatus] = useState(
         {
@@ -41,9 +43,11 @@ const Uploadbtn = () => {
 
         fileint.onchange = (e)=>{
             // console.log(e.target.files)
-            UploadFiles(e.target.files, Setshowstatus)
+            UploadFiles(e.target.files, Setshowstatus, user, props.fileupdate)
+            // console.log('xxxx', e.target.files)
+            // getUserFiles(user.uid).then(f=>props.fileupdate(f))
         }
-        dropdownref.current.removeAttribute('open')
+        // dropdownref.current.removeAttribute('open')
     }
 
     function folderupload() {
@@ -55,10 +59,10 @@ const Uploadbtn = () => {
         fileint.click()
 
         fileint.onchange = (e)=>{
-            // console.log(e.target.files)
-            UploadFiles(e.target.files, Setshowstatus, user)
+            console.log(e.target.files)
+            UploadFiles(e.target.files, Setshowstatus, user, props.fileupdate)
         }
-        dropdownref.current.removeAttribute('open')
+        // dropdownref.current.removeAttribute('open')
     }
 
   return (

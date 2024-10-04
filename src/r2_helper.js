@@ -1,9 +1,9 @@
 import axios from "axios";
-import { fetchPresignedURL, userFilesAdded } from "./mgc_helper";
+import { fetchPresignedURL, userFilesAdded, test, getUserFiles } from "./mgc_helper";
 import { formatBytes } from "./formatters";
 
 // Handler for uploading files.
-export function UploadFiles(files, stateupdate, user) {
+export function UploadFiles(files, stateupdate, user, fileupdate) {
     console.log("Initiating Upload Sequence", files)
     
     // Primary Common file data array for handling upload/completed/progress operations
@@ -16,7 +16,7 @@ export function UploadFiles(files, stateupdate, user) {
     Array.from(files).map(file=>{
         file_array.push({
             filename: file.name,
-            filesize: formatBytes(file.size),
+            filesize: file.size,
             loaded: 0,
             fileprogress: 0,
             abortcontrol: null
@@ -31,7 +31,9 @@ export function UploadFiles(files, stateupdate, user) {
     })
     // Reassigning the state variable with the file progress for the drawer component.
     fetchPresignedURL(filename_array).then(signedurls=>{
+        console.log("Total FILES", files.length)
         for (let index = 0; index < files.length; index++) {
+            console.log("looping", index, file_array)
             const element = files[index];
             console.log(signedurls[element.name])
 
@@ -54,23 +56,9 @@ export function UploadFiles(files, stateupdate, user) {
                 },
                 signal: uploadsignal,
                 onUploadProgress: (pe)=>{
-                    console.log(pe)
+                    console.log('progress', pe)
                     let Inprogress_file = file_array[file_array.findIndex(e=>e.filename === element.name)]
                     Inprogress_file.fileprogress = pe.progress * 100
-                    if (Inprogress_file.fileprogress === 100)
-                    {
-                        // let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
-                        // console.log(Completed_file)
-                        // console.log('remaining', file_array)
-                        // stateupdate(
-                        //     {
-                        //         show: true,
-                        //         filecount: files.length - 1,
-                        //         files: file_array
-                        //     }
-                        // )
-                        console.log(" 1Fileuploaded")
-                    }
                     Inprogress_file.loaded = formatBytes(pe.loaded)
                     Inprogress_file.abortcontrol = abc
                     stateupdate(
@@ -84,10 +72,10 @@ export function UploadFiles(files, stateupdate, user) {
             }).then(resp=>{
                 // File upload completed handler
                 let Completed_file = file_array.pop(file_array.findIndex(e=>e.filename === resp.config.data.name))
-                uploadcompletedarray.push(Completed_file)
-                console.log(Completed_file)
-                console.log('remaining', uploadcompletedarray)
+                // let Completed_file = file_array.splice(file_array.findIndex(e=>e.filename === resp.config.data.name),1)[0]
+                // console.log('blah', resp, [Completed_file])
                 userFilesAdded([Completed_file], user.uid).then(p=>{
+                    console.log(p)
                     stateupdate(
                         {
                             show: true,
@@ -95,7 +83,14 @@ export function UploadFiles(files, stateupdate, user) {
                             files: file_array
                         }
                     )
+                    getUserFiles(user.uid).then(files=>fileupdate(existing=>{
+                        return {
+                            filemeta: existing.filemeta,
+                            filedata: files
+                        }
+                    }))
                 })
+                console.log(sta)
             }).catch(err=>{
                 if (err.code === 'ERR_CANCELED')
                 {
@@ -103,8 +98,6 @@ export function UploadFiles(files, stateupdate, user) {
                 }
             })
         }
-        console.log("Initiating Phase 2")
-        return true
     })
 
     // Phase 2: Updating MGC api
@@ -116,6 +109,5 @@ export function UploadFiles(files, stateupdate, user) {
     //     abortcontrol: null
     // })
     
-    console.log("Initiating Phase 2")
-    userFilesAdded(uploadcompletedarray, user.uid).then(g=>console.log(g))
+    return true
 }

@@ -9,13 +9,11 @@ import Home from './pages/landing'
 import Signup from './pages/signup'
 import Signin from './pages/signin'
 import Test from './pages/home'
-import NewUpload from './pages/upload'
 import Folders from './pages/folders'
 import Mgsecure from './pages/mgsecure'
 import Trash from './pages/trash'
 import Favourites from './pages/favourites'
 import Files from './pages/files'
-import Integrations from './pages/integrations'
 
 function App() {
   return (
@@ -26,12 +24,8 @@ function App() {
         <Route path='/signin' element={<Signin/>}/>
     
         <Route path='/home' element={<RequireAuth><Files/></RequireAuth>}/>
-        <Route path='/upload' element={<RequireAuth><NewUpload/></RequireAuth>}/>
 
         <Route path='/files' element={<RequireAuth><Files/></RequireAuth>}/>
-
-        <Route path='/integrations' element={<RequireAuth><Integrations/></RequireAuth>}/>
-        <Route path='/integrations/oauth/callback' element={<OauthLoading/>}/>
 
         <Route path='/favourites' element={<RequireAuth><Favourites/></RequireAuth>}/>
         <Route path='/folders' element={<RequireAuth><Folders/></RequireAuth>}/>

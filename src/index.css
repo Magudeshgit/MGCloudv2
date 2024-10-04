@@ -93,3 +93,14 @@
 {
   background: #D5DEE2;
 }
+
+.neutrabg-strict
+{
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+#default-sidebar.active
+{
+  left: 0;
+}

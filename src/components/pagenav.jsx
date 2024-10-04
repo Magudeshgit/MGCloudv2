@@ -23,15 +23,20 @@ const navigation = [
   { name: 'Trash', href: '/trash', image: trash},
 ]
 
-export default function PageNav() {
+export default function PageNav(props) {
   const [current_path, setcurrent_path] = useState('')
+  const sidebar = document.querySelector('#default-sidebar')
+  if (props.sidebaropen)
+  {
+    sidebar.style.left = 0
+  }
   useEffect(()=>{
     setcurrent_path(window.location.pathname)
   })
   return (
   
   <>
-<aside id="default-sidebar" class="fixed top-18 left-0 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+<aside id="default-sidebar" class="fixed top-18 left-[-224px] lg:left-0 w-56 h-screen bg-white z-50" aria-label="Sidebar">
    <div class="h-full px-3 py-4 overflow-y-auto shadow dark:bg-gray-800">
       <ul class="space-y-2 font-medium font-poppins">
         {navigation.map(element=>

@@ -11,7 +11,7 @@ import { FolderIcon } from '@heroicons/react/20/solid'
 import PageNav from '../components/pagenav'
 import Uploadbtn from '../components/uploadbtn'
 import Folderactions from '../components/folderactions'
-import T1 from '../components/t1'
+// import DefaultNavbar from '../components/defaultnavbar'
 
 
 const Folders = () => {
@@ -23,7 +23,7 @@ const Folders = () => {
     },[])
   return (
     <>
-        <T1/>
+        {/* <DefaultNavbar/> */}
         <PageNav/>
         <section className='p-6 gap-4 ml-56'>
             <div className='flex w-full justify-between items-center'>
