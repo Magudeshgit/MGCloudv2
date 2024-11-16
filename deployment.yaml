@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mgcloud-ft
+spec:
+  selector:
+    matchLabels: 
+      app: mgcloud-ft
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: mgcloud-ft
+    spec:
+      containers:
+      - name: mgcloud-ft
+        image: mgcloud-ft
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5173

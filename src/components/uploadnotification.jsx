@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Statusdrawer from './statusdrawer'
+import status from '../assets/images/status.svg'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -7,10 +7,6 @@ import FileUploading from './fileuploading'
 
 const UploadNotification = (props) => {
     const [open, setOpen] = useState(true)
-    const [status, setstatus] = useState(true)
-    useEffect(()=>{
-      console.log(props.drawerdata)
-    })
     
   return (
 <>
@@ -57,7 +53,10 @@ const UploadNotification = (props) => {
               </TransitionChild>
               <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                 <div className="px-4 sm:px-6">
-                  <DialogTitle className="text-base font-semibold leading-6 text-gray-900">Uploading files</DialogTitle>
+                  <DialogTitle className="text-base font-semibold leading-6 text-gray-900 items-center flex gap-1">
+                  <img src={status} className='opacity-65 max-w-5'/>
+                    Status bar
+                  </DialogTitle>
                 </div>
 
                 <div className="relative mt-6 flex flex-col px-4 sm:px-6 gap-4">

@@ -17,7 +17,7 @@ const Fileactions = (props) => {
     <div tabIndex={0} role="button" className="btn m-1 neutrabg-strict">
         <img src={fileactions} alt="" />
     </div>
-    <ul className="menu dropdown-content bg-base-100 rounded-box z-[50] w-52 p-2 shadow">
+    <ul className="menu dropdown-content bg-base-100 rounded-md z-[50] w-52 p-2 shadow">
             <li>
                 <Link>
                     <img src={download} alt="download"  className='opacity-65'/>

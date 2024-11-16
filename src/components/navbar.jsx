@@ -1,4 +1,4 @@
-import {React, useRef} from 'react'
+import {React, useRef, useState} from 'react'
 import { Cog6ToothIcon, Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import searchbtn from '../assets/images/searchbtn.svg'
 import logo from '../assets/images/logo.svg'
@@ -6,6 +6,7 @@ import { Button } from '@headlessui/react'
 import Uploadbtn from './uploadbtn'
 import add from '../assets/images/add.svg'
 import PageNav from './pagenav'
+import { XMarkIcon } from '@heroicons/react/16/solid'
 
 import { Link } from 'react-router-dom'
 
@@ -15,56 +16,92 @@ import share from '../assets/images/navigation/share.svg'
 import favourite from '../assets/images/navigation/favourite.svg'
 import mgsecure from '../assets/images/navigation/mgsecure.svg'
 import trash from '../assets/images/navigation/trash.svg'
+import profileeg from '../assets/images/profileeg.svg'
+import status from '../assets/images/status.svg'
+import UploadNotification from './uploadnotification'
 
+import {DocumentIcon, FolderIcon, HeartIcon, ShareIcon, LockClosedIcon, TrashIcon} from '@heroicons/react/24/outline'
 
+// The SideBar
 
 const navigation = [
-  { name: 'All Files', href: '/files', image: files},
-  { name: 'Folders', href: '/folders', image: folder},
-  { name: 'Favourites', href: '/favourites', image: favourite},
+  { name: 'All Files', href: '/files', image: <DocumentIcon className='w-5 h-5 opacity-85'/>},
+  { name: 'Folders', href: '/folders', image: <FolderIcon className='w-5 h-5 opacity-85'/>},
+  { name: 'Favourites', href: '/favourites', image: <HeartIcon className='w-5 h-5 opacity-85'/>},
 
-  { name: 'Shared', href: '/integrations', image: share},
-  { name: 'MGSecure', href: '/mgsecure',image: mgsecure},
-  { name: 'Trash', href: '/trash', image: trash},
+  { name: 'Shared', href: '/integrations', image: <ShareIcon className='w-5 h-5 opacity-85'/>},
+  { name: 'MGSecure', href: '/mgsecure',image: <LockClosedIcon className='w-5 h-5 opacity-85'/>},
+  { name: 'Trash', href: '/trash', image: <TrashIcon className='w-5 h-5 opacity-85'/>},
 ]
 
 const Navbar = () => {
   const sidebar = useRef()
+  const logoref = useRef()
+  const searchref = useRef()
+  const searchicoref = useRef()
+  const xMark = useRef()
+
+  const [notificationstatus, setnotificationstatus] = useState(false)
+
   function sidebarHandler()
   {
     sidebar.current.classList.toggle('active')
   }
+  function showSearch(e)
+  {
+    
+    logoref.current.classList.toggle("hidden")
+    searchref.current.classList.toggle("hidden")
+    xMark.current.classList.toggle("hidden")
+    searchicoref.current.classList.toggle('hidden')
+  }
   return (
     <>
-    <div className='w-[100vw] bg-white shadow py-2 px-4 flex justify-between items-center '>
+    <div className='w-[100vw] bg-white shadow py-3 px-4 flex justify-between items-center gap-5 lg:gap-28'>
       <button className='lg:hidden p-1 hover:bg-gray-100 transition-all rounded-md' onClick={()=>{<PageNav sidebaropen={true}/>}}>
       <Bars3Icon className='w-6 h-6 opacity-65' onClick={sidebarHandler}/>
       </button>
 
-      <div>
+      <div ref={logoref} className='logo'>
         <img src={logo} alt="logo" />
       </div>
 
-
-      <div className='items-center flex gap-4'>
-        <label className='relative focus:border-none'>
-          <img src={searchbtn} className='w-4 h-4 absolute top-[12px] left-[14px] opacity-65'/>
-
-          <input type="text" className='border-2 border-gray-200 rounded-md pl-10 focus:border-black'/>
-        </label>
-          <button className='rounded-full p-1 hover:bg-gray-100'>
-          <Cog6ToothIcon className='w-6 h-6 opacity-65'/>
-          </button>
+      {/* Search Bar */}
+      <div className='relative hidden md:block transition-all duration-700 w-full' ref={searchref}>
+      <img src={searchbtn} className='absolute opacity-35 top-2 left-2 max-w-4'/>
+      <input type="text" className='bg-gray-100 rounded-md border-none font-poppins text-xs w-full placeholder-gray-400 pl-8' placeholder='Search your files/folders'/>
       </div>
-    </div>
 
-<div id="default-sidebar" class="fixed top-18 left-[-224px] lg:left-0 w-56 h-screen bg-white z-50 sidebar transition-all duration-300 ease-in-out" aria-label="Sidebar" ref={sidebar}>
-  <div class="h-full px-3 py-4 overflow-y-auto shadow dark:bg-gray-800">
+      <div className='gap-4 flex'>
+        <button className='rounded-full p-2 hover:bg-gray-100  md:hidden' onClick={()=>showSearch()} ref={searchicoref}>
+        <img src={searchbtn} className='max-w-5 opacity-75'/>
+        </button>
+        <button className='rounded-full p-2 hover:bg-gray-100 hidden' ref={xMark} onClick={()=>showSearch()}>
+        <XMarkIcon className='w-5 h-5 opacity-65'/>
+        </button>
+
+
+        <div className='relative'>
+          <button className='rounded-full p-2 hover:bg-gray-100' onClick={()=>setnotificationstatus(!notificationstatus)}>
+            <img src={status} className='opacity-35 max-w-8'/>
+          </button>
+
+          {notificationstatus?<UploadNotification filecount={0} drawerdata={[]}/>:<></>}
+        </div>
+
+        <img src={profileeg} alt="profile" className='max-w-8' />
+        
+      </div>
+
+    </div>
+{/* Side Bar */}
+<div id="default-sidebar" class="fixed top-18 left-[-224px] lg:left-0 w-56 bg-white sidebar h-screen transition-all duration-300 ease-in-out" aria-label="Sidebar" ref={sidebar}>
+  <div class="h-full px-3 py-4 overflow-y-auto dark:bg-gray-800">
     <ul class="space-y-2 font-medium font-poppins">
       {navigation.map(element=>
         <li>
           <Link to={element.href} class="flex gap-2 items-center p-2 text-sm text-gray-500 rounded-lg dark:text-white hover:bg-white hover:text-black group hover:invert transition-all duration-200">
-              <img src={element.image} alt="navicon" className='opacity-55'/>
+              {element.image}
               {element.name}
           </Link> 
         </li>

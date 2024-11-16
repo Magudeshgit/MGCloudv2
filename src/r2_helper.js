@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fetchPresignedURL, userFilesAdded, test, getUserFiles } from "./mgc_helper";
+import { fetchPresignedURL, userFilesAdded  , getUserFiles } from "./mgc_helper";
 import { formatBytes } from "./formatters";
 
 // Handler for uploading files.

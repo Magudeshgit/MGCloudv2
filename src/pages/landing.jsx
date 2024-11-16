@@ -12,103 +12,103 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const Home = () => {
   gsap.registerPlugin(ScrollTrigger)
-  useGSAP(()=>{
-    gsap.fromTo('.text1',
-      {
-        opacity: 0,
-        y: 20
-      },
-      {
-        opacity: 1,
-        y: 0,
-        delay: .2,
-        duration: 1,
-        scrollTrigger: 
-        {
-          trigger: '.textwrap'
-        }
-      }
-    )
-    gsap.fromTo('.text2',
-      {
-        opacity: 0,
-      },
-      {
-        opacity: 1,
-        duration: 1,
-        delay: .2
-      }
-    )
-    gsap.from('.button',
-      {
-        // width: '10%',
-        // // height: '10%',
-        // padding: 0,
-        opacity: 0,
-        delay: .2,
-      }
-    )
-    gsap.to('.mimg',
-      {
-        scrollTrigger:
-        {
-          trigger: '.imgwrap',
-          start: 'top center',
-          scrub: 1,
-          duration: 4,
-          ease: 'power1.inOut' 
-        },
-        scale: 1.1,
-      }
-    ) 
-    gsap.from('.featcard',
-      {
-        opacity: 0,
-        stagger: .5,
-        duration: 1,
-        ease:  'power1.in',
-        scrollTrigger: 
-        {
-          trigger: '.featsec',
-          start: 'top center',
-        }
-      }
-    )
-    gsap.from('.sbmg',
-      {
-        y: 150,
-        duration: 1.2,
-        ease: 'power1.inout',
-        scrollTrigger: 
-        {
-          trigger: '.sbmgsec',
-          start: 'bottom bottom'
-        }
+  // useGSAP(()=>{
+  //   gsap.fromTo('.text1',
+  //     {
+  //       opacity: 0,
+  //       y: 20
+  //     },
+  //     {
+  //       opacity: 1,
+  //       y: 0,
+  //       delay: .2,
+  //       duration: 1,
+  //       scrollTrigger: 
+  //       {
+  //         trigger: '.textwrap'
+  //       }
+  //     }
+  //   )
+  //   gsap.fromTo('.text2',
+  //     {
+  //       opacity: 0,
+  //     },
+  //     {
+  //       opacity: 1,
+  //       duration: 1,
+  //       delay: .2
+  //     }
+  //   )
+  //   gsap.from('.button',
+  //     {
+  //       // width: '10%',
+  //       // // height: '10%',
+  //       // padding: 0,
+  //       opacity: 0,
+  //       delay: .2,
+  //     }
+  //   )
+  //   gsap.to('.mimg',
+  //     {
+  //       scrollTrigger:
+  //       {
+  //         trigger: '.imgwrap',
+  //         start: 'top center',
+  //         scrub: 1,
+  //         duration: 4,
+  //         ease: 'power1.inOut' 
+  //       },
+  //       scale: 1.1,
+  //     }
+  //   ) 
+  //   gsap.from('.featcard',
+  //     {
+  //       opacity: 0,
+  //       stagger: .5,
+  //       duration: 1,
+  //       ease:  'power1.in',
+  //       scrollTrigger: 
+  //       {
+  //         trigger: '.featsec',
+  //         start: 'top center',
+  //       }
+  //     }
+  //   )
+  //   gsap.from('.sbmg',
+  //     {
+  //       y: 150,
+  //       duration: 1.2,
+  //       ease: 'power1.inout',
+  //       scrollTrigger: 
+  //       {
+  //         trigger: '.sbmgsec',
+  //         start: 'bottom bottom'
+  //       }
 
-      }
-    )
-    gsap.from('.sbmgtxt',
-      {
-        opacity: 0,
-        delay: .25,
-        duration: 4,
-        scrollTrigger: 
-        {
-          trigger: '.sbmgsec',
-          start: 'bottom bottom'
-        }
-      }
-    )
+  //     }
+  //   )
+  //   gsap.from('.sbmgtxt',
+  //     {
+  //       opacity: 0,
+  //       delay: .25,
+  //       duration: 4,
+  //       scrollTrigger: 
+  //       {
+  //         trigger: '.sbmgsec',
+  //         start: 'bottom bottom'
+  //       }
+  //     }
+  //   )
 
-    gsap.from('.bars',
-      {
-        // scale: 1.2,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.in'
-      }
-    )
-  })  
+  //   gsap.from('.bars',
+  //     {
+  //       // scale: 1.2,
+  //       opacity: 0,
+  //       duration: 1,
+  //       ease: 'power3.in'
+  //     }
+  //   )
+  // })  
 
   return (
     <section className="relative max-w-[1440px] overflow-hidden ml-auto mr-auto">

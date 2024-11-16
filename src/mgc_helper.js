@@ -81,7 +81,6 @@ export function fetchPresignedURL(files)
 export function userFilesAdded(filesarray, userid)
 {
     const urlrequest = new Promise((resolve, reject)=>{
-        console.log("Phase 2")
         axios.post(`${cloudapi}adduserfiles/`, {
             "userid": userid,
             "files": filesarray
@@ -95,7 +94,37 @@ export function userFilesAdded(filesarray, userid)
     return urlrequest
 }
 
-export function test()
+export function getFileURL(filename) {
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}getfileurl/`, {
+            "filename": filename
+        },
+        {
+            headers: {
+                Authorization: `Token ${MGC_SECRET}`
+            }
+        }
+    ).then(e=>{resolve(e.data.url)}).catch(err=>reject(err))
+    })
+
+    return urlrequest
+}
+
+export function modifyFavouriteStatus(fileid, userid, addstatus)
 {
-    console.log("Phase 3")
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}modifyfilefavourite/`, {
+            "fileid": fileid,
+            "userid": userid,
+            "addfavourite": addstatus
+        },
+        {
+            headers: {
+                Authorization: `Token ${MGC_SECRET}`
+            }
+        }
+    ).then(e=>{resolve(e)}).catch(err=>reject(err))
+    })
+
+    return urlrequest
 }

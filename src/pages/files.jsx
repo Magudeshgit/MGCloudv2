@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getUserFiles } from '../mgc_helper'
+import { getUserFiles, getFileURL } from '../mgc_helper'
 import { ArrowsUpDownIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 
 // Statics
@@ -15,6 +15,7 @@ import Uploadbtn from '../components/uploadbtn'
 import Fileactions from '../components/fileactions'
 import Navbar from '../components/navbar'
 import Sortoptions from '../components/sortoptions'
+import Filepreview from '../components/filepreview'
 
 // Functional Components
 import { useAuth } from '../authcontext'
@@ -24,16 +25,6 @@ import { alphabeticalSorter, dateSorter, formatBytes, sizeSorter } from '../form
 
 
 const Files = () => {
-    function alphasort(a,b) {
-        if (a.filename>b.filename)
-        {
-            return 1
-        }
-        else
-        {
-            return -1
-        }
-    }
     const {user} = useAuth()
     const [filedata, setfiledata] = useState({
         filemeta: {
@@ -43,15 +34,25 @@ const Files = () => {
         },
         filedata: []
     })
-    let jk = [];
+    const [statuspreview, setstatuspreview] = useState({
+        show: false,
+        fileurl: null,
+        filename: null,
+        isFavourite: null,
+        filesharing: null
+    })
     useEffect(()=>{
         getUserFiles(user.uid).then(f=>{
             // alphabeticalSorter(f)
             let temp = filedata.filemeta
             setfiledata({filemeta: temp, filedata: f})
-            console.log("Non UPdated", filedata)
+            console.log("Non Updated", f)
         })
     },[])
+
+    useEffect(()=>{
+        console.log(statuspreview)
+    },[statuspreview])
 
     function sorthandler(type){
         let op;
@@ -75,21 +76,34 @@ const Files = () => {
         setfiledata({filemeta: temp, filedata: op})
     }
 
-
-  return (
-    <section className='max-h-[100vh]'>
+    function previewhandler(id, filename, filesize,filesharing, isFavourite){
+        console.log(filesharing)
+        console.log(filename)
+        getFileURL(filename).then(url=>{
+            setstatuspreview({
+                show: true,
+                fileurl: url,
+                filesize: filesize,
+                id: id,
+                userid:user.uid,
+                filename: filename,
+                filesharing: filesharing,
+                isFavourite: isFavourite
+            })
+        })
+    }
+  
+    return (
+    <section className='relative w-full bg-[#F7F7F5] h-[90vh]'>
         <Navbar/>
-        <section className='p-6 gap-4 lg:ml-56 bg-[#F7F7F5] h-screen pb-11'>
+        {statuspreview.show?<Filepreview status={statuspreview} setshow={setstatuspreview}/>:<></>}
+        <section className='p-6 gap-4 lg:ml-56 bg-[#F7F7F5] h-[100%]'>
         <div className='flex w-full justify-between items-center'>
             <div>
                 <p className='font-bold text-xl'>All Files</p>
                 <p className='font-medium text-gray-500 text-xs'>You can browse through all your files.</p>
             </div>
                 <Uploadbtn fileupdate={setfiledata}/>
-                {/* <button className='font-medium border border-gray-300 rounded-lg px-4 py-2 flex text-sm items-center text-gray-600 hover:bg-white hover:text-black hover:invert transition-all'>
-                    <p className='font-semibold'>Upload</p>
-                    <img src={add} alt="add" className=''/>
-                </button> */}
             </div>
         <div className="overflow-x-auto mt-5 bg-white min-h-[50vh] rounded-md shadow-md">
             <table className="table">
@@ -142,12 +156,10 @@ const Files = () => {
                     </th>
                 </tr>
             </thead>
-            <tbody >
-                {console.log(filedata)}
+            <tbody>
                 {filedata.filedata.map(file=>(
-                    <tr className='hover:shadow-md transition-all duration-300' key={file.id}>
-                    <td className='flex items-center gap-2'>
-
+                    <tr className='hover:shadow-md transition-all duration-300 cursor-pointer' key={file.id}>
+                    <td className='flex items-center gap-2 hover:bg-gray-100 transition-all h-full rounded-md' onClick={()=>previewhandler(file.id, file.filename, file.filesize, file.isShared, file.isFavourite)}>
                         <img src={FILE_ICONS[file.filename.toLocaleLowerCase().split('.')[1]] || FILE_ICONS['unknown']} alt="folder" className='opacity-65 min-w-10 min-h-10'/>
                         
                         <div className='flex flex-col'>
