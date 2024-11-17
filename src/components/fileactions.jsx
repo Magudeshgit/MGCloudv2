@@ -8,6 +8,9 @@ import trash from '../assets/images/trashred.svg'
 import info from '../assets/images/info.svg'
 import { Link } from 'react-router-dom'
 
+import { XMarkIcon, ArrowDownTrayIcon, ArrowsPointingOutIcon, TrashIcon} from '@heroicons/react/16/solid'
+import { InformationCircleIcon, HeartIcon } from '@heroicons/react/24/outline'
+
 const Fileactions = (props) => {
 
   
@@ -19,22 +22,28 @@ const Fileactions = (props) => {
     </div>
     <ul className="menu dropdown-content bg-base-100 rounded-md z-[50] w-52 p-2 shadow">
             <li>
-                <Link>
-                    <img src={download} alt="download"  className='opacity-65'/>
-                    Download
-                </Link>
+                <button>
+                    <HeartIcon className='w-4 h-4'/>
+                    Add to Favourite
+                </button>
             </li>
 
             <li>
                 <Link>
-                    <img src={info} alt="info"  className='opacity-65'/>
-                    Info
+                    <ArrowDownTrayIcon className='w-4 h-4'/>
+                    Download
+                </Link>
+            </li>
+            <li>
+                <Link>
+                    <InformationCircleIcon className='w-4 h-4'/>
+                    Information
                 </Link>
             </li>
             <hr/>
             <li>
                 <Link className='text-red-500'>
-                    <img src={trash} alt="copy"  className='opacity-65'/>
+                    <TrashIcon className='w-4 h-4'/>
                     Delete
                 </Link>
             </li>

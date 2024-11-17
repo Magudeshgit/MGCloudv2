@@ -110,6 +110,22 @@ export function getFileURL(filename) {
     return urlrequest
 }
 
+export function getFileDownloadURL(filename) {
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}getfiledownloadurl/`, {
+            "filename": filename
+        },
+        {
+            headers: {
+                Authorization: `Token ${MGC_SECRET}`
+            }
+        }
+    ).then(e=>{resolve(e.data.url)}).catch(err=>reject(err))
+    })
+
+    return urlrequest
+}
+
 export function modifyFavouriteStatus(fileid, userid, addstatus)
 {
     const urlrequest = new Promise((resolve, reject)=>{
@@ -128,3 +144,4 @@ export function modifyFavouriteStatus(fileid, userid, addstatus)
 
     return urlrequest
 }
+

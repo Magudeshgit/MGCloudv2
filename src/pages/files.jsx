@@ -16,6 +16,7 @@ import Fileactions from '../components/fileactions'
 import Navbar from '../components/navbar'
 import Sortoptions from '../components/sortoptions'
 import Filepreview from '../components/filepreview'
+import Previewactions from '../components/previewactions'
 
 // Functional Components
 import { useAuth } from '../authcontext'
@@ -50,10 +51,6 @@ const Files = () => {
         })
     },[])
 
-    useEffect(()=>{
-        console.log(statuspreview)
-    },[statuspreview])
-
     function sorthandler(type){
         let op;
         let temp = filedata.filemeta
@@ -76,19 +73,14 @@ const Files = () => {
         setfiledata({filemeta: temp, filedata: op})
     }
 
-    function previewhandler(id, filename, filesize,filesharing, isFavourite){
-        console.log(filesharing)
-        console.log(filename)
-        getFileURL(filename).then(url=>{
+    function previewhandler(file){
+ 
+        getFileURL(file.filename).then(url=>{
             setstatuspreview({
                 show: true,
-                fileurl: url,
-                filesize: filesize,
-                id: id,
                 userid:user.uid,
-                filename: filename,
-                filesharing: filesharing,
-                isFavourite: isFavourite
+                fileurl: url,
+                filedata: file
             })
         })
     }
@@ -96,7 +88,7 @@ const Files = () => {
     return (
     <section className='relative w-full bg-[#F7F7F5] h-[90vh]'>
         <Navbar/>
-        {statuspreview.show?<Filepreview status={statuspreview} setshow={setstatuspreview}/>:<></>}
+        {statuspreview.show?<Filepreview status={statuspreview} setshow={setstatuspreview} fileurl={statuspreview.fileurl}/>:<></>}
         <section className='p-6 gap-4 lg:ml-56 bg-[#F7F7F5] h-[100%]'>
         <div className='flex w-full justify-between items-center'>
             <div>
@@ -159,7 +151,7 @@ const Files = () => {
             <tbody>
                 {filedata.filedata.map(file=>(
                     <tr className='hover:shadow-md transition-all duration-300 cursor-pointer' key={file.id}>
-                    <td className='flex items-center gap-2 hover:bg-gray-100 transition-all h-full rounded-md' onClick={()=>previewhandler(file.id, file.filename, file.filesize, file.isShared, file.isFavourite)}>
+                    <td className='flex items-center gap-2 hover:bg-gray-100 transition-all h-full rounded-md' onClick={()=>previewhandler(file)}>
                         <img src={FILE_ICONS[file.filename.toLocaleLowerCase().split('.')[1]] || FILE_ICONS['unknown']} alt="folder" className='opacity-65 min-w-10 min-h-10'/>
                         
                         <div className='flex flex-col'>

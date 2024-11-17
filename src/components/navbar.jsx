@@ -27,10 +27,11 @@ import {DocumentIcon, FolderIcon, HeartIcon, ShareIcon, LockClosedIcon, TrashIco
 const navigation = [
   { name: 'All Files', href: '/files', image: <DocumentIcon className='w-5 h-5 opacity-85'/>},
   { name: 'Folders', href: '/folders', image: <FolderIcon className='w-5 h-5 opacity-85'/>},
+  { name: 'MGSecure', href: '/mgsecure',image: <LockClosedIcon className='w-5 h-5 opacity-85'/>},
+  
   { name: 'Favourites', href: '/favourites', image: <HeartIcon className='w-5 h-5 opacity-85'/>},
 
   { name: 'Shared', href: '/integrations', image: <ShareIcon className='w-5 h-5 opacity-85'/>},
-  { name: 'MGSecure', href: '/mgsecure',image: <LockClosedIcon className='w-5 h-5 opacity-85'/>},
   { name: 'Trash', href: '/trash', image: <TrashIcon className='w-5 h-5 opacity-85'/>},
 ]
 
@@ -72,7 +73,7 @@ const Navbar = () => {
       <input type="text" className='bg-gray-100 rounded-md border-none font-poppins text-xs w-full placeholder-gray-400 pl-8' placeholder='Search your files/folders'/>
       </div>
 
-      <div className='gap-4 flex'>
+      <div className='gap-1 flex'>
         <button className='rounded-full p-2 hover:bg-gray-100  md:hidden' onClick={()=>showSearch()} ref={searchicoref}>
         <img src={searchbtn} className='max-w-5 opacity-75'/>
         </button>
@@ -81,7 +82,7 @@ const Navbar = () => {
         </button>
 
 
-        <div className='relative'>
+        <div className='relative hidden md:block'>
           <button className='rounded-full p-2 hover:bg-gray-100' onClick={()=>setnotificationstatus(!notificationstatus)}>
             <img src={status} className='opacity-35 max-w-8'/>
           </button>
@@ -95,7 +96,7 @@ const Navbar = () => {
 
     </div>
 {/* Side Bar */}
-<div id="default-sidebar" class="fixed top-18 left-[-224px] lg:left-0 w-56 bg-white sidebar h-screen transition-all duration-300 ease-in-out" aria-label="Sidebar" ref={sidebar}>
+<div id="default-sidebar" class="fixed top-18 left-[-224px] lg:left-0 w-56 bg-white z-50 sidebar h-screen transition-all duration-300 ease-in-out" aria-label="Sidebar" ref={sidebar}>
   <div class="h-full px-3 py-4 overflow-y-auto dark:bg-gray-800">
     <ul class="space-y-2 font-medium font-poppins">
       {navigation.map(element=>

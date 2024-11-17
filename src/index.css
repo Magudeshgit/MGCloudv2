@@ -119,5 +119,5 @@
 }
 #msdoc-renderer>iframe
 { 
-  min-height: 500px;
+  position: absolute;
 }

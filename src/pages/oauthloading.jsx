@@ -19,7 +19,7 @@ const OauthLoading = () => {
     <section className='w-[100vw] h-[100vh] flex flex-col justify-center items-center p-6'>
       <div className=''>
         <div className='flex gap-4'>
-          <img src={logoimg}/>
+          {/* <img src={logoimg} className='w-12 h-12'/> */}
           <Loader size="w-6 h-6"/>
         </div>
         <p className='font-poppins font-medium text-xl text-gray-700'>We are Authorizing you, please hold on. This might take a few minutes.</p>
