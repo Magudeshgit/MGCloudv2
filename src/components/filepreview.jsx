@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState, memo } from 'react'
+import React, { useEffect, useState, memo, useRef } from 'react'
 // import DocViewer from "@cyntler/react-doc-viewer"
 import { XMarkIcon, ArrowDownTrayIcon, ArrowsPointingOutIcon} from '@heroicons/react/16/solid'
 import { InformationCircleIcon, HeartIcon } from '@heroicons/react/24/outline'
@@ -19,9 +19,12 @@ const Filepreview = (props) => {
   {
     modifyFavouriteStatus(props.status.filedata.id, props.status.userid, !props.status.filedata.isFavourite)
     .then(resp=>{
-      const intermediatary = JSON.parse(JSON.stringify(props.status))
-      intermediatary.filedata.isFavourite = resp.data.details[0].isFavourite
-      props.setshow(intermediatary)
+      if (resp.data.success)
+      {
+        const intermediatary = JSON.parse(JSON.stringify(props.status))
+        intermediatary.filedata.isFavourite = resp.data.details[0].isFavourite
+        props.setshow(intermediatary)
+      }
     })
   }
   function downloadfile()
@@ -38,8 +41,10 @@ const Filepreview = (props) => {
   {
     props.setshow({show: false})
   }
+  const sod = useRef()
+  console.log(sod.current)
   return (
-    <section className="flex bg-black bg-opacity-20 justify-center w-full h-[100vh] items-center absolute top-0 left-0 z-50 p-6">
+    <section className="flex bg-black bg-opacity-20 justify-center w-full h-[100vh] items-center absolute top-0 left-0 z-50 p-6 pp" ref={sod}>
             {/* overlay */}
             <div className="w-full h-[450px] md:h-[550px] bg-white rounded-md overflow-y-scroll shadow-lg relative">
               <div className='w-full z-50 flex bg-white justify-between p-2 md:p-6 border-b items-center sticky top-0 left-0'>

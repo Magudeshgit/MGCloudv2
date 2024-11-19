@@ -28,7 +28,7 @@ const Previewactions = (props) => {
     </div>
     
     {!currstatus?
-    <ul className="menu dropdown-content bg-base-100 rounded-md z-[50] w-52 p-2 shadow">
+    <ul className="menu dropdown-content bg-base-100 rounded-md z-[50] w-52 p-2 shadow bg-white">
             <li>
                 <button onClick={()=>{setcurrstatus(!currstatus);props.favouritecallback();}}>
                     {props.favouritestatus?

@@ -7,6 +7,7 @@ import folder from '../assets/images/folder2.svg'
 import fileico from '../assets/images/fileico.svg'
 import upload from '../assets/images/upload.svg'
 
+
 import UploadNotification from './uploadnotification'
 
 import { Link } from 'react-router-dom'
@@ -16,6 +17,7 @@ import { getUserFiles } from '../mgc_helper'
 
 const Uploadbtn = (props) => {
     const { user } = useAuth()
+    const [showstatuspane, setshowstatuspane] = useState(false)
     const [showstatus, Setshowstatus] = useState(
         {
             show: false,
@@ -43,7 +45,7 @@ const Uploadbtn = (props) => {
 
         fileint.onchange = (e)=>{
             // console.log(e.target.files)
-            UploadFiles(e.target.files, Setshowstatus, user, props.fileupdate)
+            UploadFiles(e.target.files, Setshowstatus, user, props.fileupdate, setshowstatuspane)
             // console.log('xxxx', e.target.files)
             // getUserFiles(user.uid).then(f=>props.fileupdate(f))
         }
@@ -60,7 +62,7 @@ const Uploadbtn = (props) => {
 
         fileint.onchange = (e)=>{
             console.log(e.target.files)
-            UploadFiles(e.target.files, Setshowstatus, user, props.fileupdate)
+            UploadFiles(e.target.files, Setshowstatus, user, props.fileupdate, setshowstatuspane)
         }
         // dropdownref.current.removeAttribute('open')
     }
@@ -74,7 +76,8 @@ const Uploadbtn = (props) => {
                     <p className='font-semibold'>Upload</p>
                     <img src={add} alt="add" className=''/>
     </button>
-    {dropdown?<ul className="menu opacity-100 dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow font-poppins absolute right-0 top-12 transition-all duration-300 ease-in-out">
+    {dropdown?
+    <ul className="menu opacity-100 bg-white dropdown-content rounded-box z-30 w-52 p-2 shadow font-poppins absolute right-0 top-12 transition-all duration-300 ease-in-out">
         <li>
             <button onClick={filesupload}>
                 <img src={fileico} className='opacity-65 w-4'/>
@@ -95,7 +98,7 @@ const Uploadbtn = (props) => {
         </li>
     </ul>:<></>}
     </div>
-    {showstatus.show?<UploadNotification filecount={showstatus.files.length} drawerdata={showstatus.files}/>:<></>}
+    {showstatuspane?<UploadNotification filecount={showstatus.files.length} drawerdata={showstatus.files} show={showstatuspane} setshow={setshowstatuspane}/>:<></>}
     </>
   )
 }

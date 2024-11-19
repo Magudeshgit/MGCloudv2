@@ -3,7 +3,8 @@ import { fetchPresignedURL, userFilesAdded  , getUserFiles } from "./mgc_helper"
 import { formatBytes } from "./formatters";
 
 // Handler for uploading files.
-export function UploadFiles(files, stateupdate, user, fileupdate) {
+export function UploadFiles(files, stateupdate, user, fileupdate, statuspane) {
+
     console.log("Initiating Upload Sequence", files)
     
     // Primary Common file data array for handling upload/completed/progress operations
@@ -12,6 +13,11 @@ export function UploadFiles(files, stateupdate, user, fileupdate) {
     const filename_array=[]
     // Dedicated File object to handle post upload operation which is intimate MGC API
     const uploadcompletedarray = []
+
+    function drawerClosure()
+    {
+        console.log("DONE WITH UPLOADING", stateupdate)
+    }
 
     Array.from(files).map(file=>{
         file_array.push({
@@ -24,18 +30,16 @@ export function UploadFiles(files, stateupdate, user, fileupdate) {
 
         filename_array.push(file.name)
     })
-    stateupdate({
-        show: true,
-        filecount: files.length,
-        files: file_array
-    })
     // Reassigning the state variable with the file progress for the drawer component.
     fetchPresignedURL(filename_array).then(signedurls=>{
-        console.log("Total FILES", files.length)
+        stateupdate({
+            show: true,
+            filecount: files.length,
+            files: file_array
+        })
+        statuspane(true)
         for (let index = 0; index < files.length; index++) {
-            console.log("looping", index, file_array)
             const element = files[index];
-            console.log(signedurls[element.name])
 
             // Upload Cancel Handler
             const abc = new AbortController()
@@ -48,7 +52,9 @@ export function UploadFiles(files, stateupdate, user, fileupdate) {
                     files: file_array
                 })
             }
-            axios.put(
+            
+            // Uploading
+            const request = axios.put(
                 signedurls[element.name], //Get Signed url from object
                 element, {
                 headers: {
@@ -96,18 +102,12 @@ export function UploadFiles(files, stateupdate, user, fileupdate) {
                 {
                     console.log('Upload Cancelled')
                 }
-            })
-        }
+            });
+            uploadcompletedarray.push(request)
+        }   
+
+        Promise.all(uploadcompletedarray)
+        .then(()=>{console.log("Now thats done!"); statuspane(false)})
     })
 
-    // Phase 2: Updating MGC api
-    // file_array.push({
-    //     filename: file.name,
-    //     filesize: formatBytes(file.size),
-    //     loaded: 0,
-    //     fileprogress: 0,
-    //     abortcontrol: null
-    // })
-    
-    return true
 }

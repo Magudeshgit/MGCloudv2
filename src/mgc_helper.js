@@ -1,10 +1,12 @@
 // MGCloud API Logging and Retrieving Operations
 const cloudapi = 'http://127.0.0.1:8000/api/cloud/'
+// const cloudapi = 'http://192.168.56.91:5001/api/cloud/'
 import axios from "axios"
 const MGC_SECRET = import.meta.env.VITE_MGC_TOKEN
 
 export function getUserFiles(userid) {
     const filerequest = new Promise((resolve, reject)=>{
+        console.log(userid)
         axios.post(cloudapi+'userfiles/',
             {
                 userid: userid
@@ -145,3 +147,19 @@ export function modifyFavouriteStatus(fileid, userid, addstatus)
     return urlrequest
 }
 
+export function deleteObject(fileid, userid)
+{
+    const urlrequest = new Promise((resolve, reject)=>{
+        axios.post(`${cloudapi}deleteobject/`, {
+            "fileid": fileid,
+            "userid": userid,
+        },
+        {
+            headers: {
+                Authorization: `Token ${MGC_SECRET}`
+            }
+        }
+    ).then(e=>{resolve(e)}).catch(err=>reject(err))
+    })
+    return urlrequest
+}

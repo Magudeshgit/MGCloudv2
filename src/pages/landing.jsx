@@ -4,6 +4,7 @@ import arrow from '../assets/images/arrow.svg'
 import pcview from '../assets/images/pcview.svg'
 import caret from '../assets/images/caret.svg'
 import { Link } from 'react-router-dom'
+import logo from '../assets/images/logo.svg'
 
 // Animation Dependencies
 import { useGSAP } from '@gsap/react'
@@ -115,23 +116,29 @@ const Home = () => {
       <section className="px-6 pt-6  max-w-full overflow-hidden relative">
        <Navbar/>
        <main className="w-full min-h-[100%] flex flex-col items-center justify-center mt-12">
-            <div className='max-w-[80%] textwrap'>
+            <div className='lg:max-w-[80%] textwrap'>
                 <p className="lg:text-6xl text-4xl font-bold text-center text1">Unleash the idea of security on a different Perception.</p>
                 <p className="text-center text-slate-500 mt-4 text2">The sneaky little place to hide your clingy little photos, <br/>Don’t worry we’ve got you covered</p>
             </div>
-            <div className="flex mt-4">
+            <div className="flex mt-6 lg:mt-4 flex-col gap-2">
               <Link to="/signup">
-                <button className="button flex gap-2 text-[15px] lg:text-[18px] items-center py-2 px-4 md:py-2 md:px-16 bg-[#282828] hover:bg-black transition-colors rounded-full text-white overflow-hidden">
-                    <p className='btntext'>Create an account</p>
+                <button className="button flex gap-2 text-[15px] lg:text-[18px] items-center py-3 ring-1 px-6 font-sfprodisplay md:py-2 md:px-16 bg-[#282828] hover:bg-black transition-colors rounded-full text-white overflow-hidden">
+                    <p className='font-poppins font-medium text-xs'>Create an account</p>
                     <img src={arrow}/>
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="button w-full text-center justify-center flex gap-2 text-[15px] lg:text-[18px] items-center py-3 ring-1 px-6 font-sfprodisplay md:py-2 md:px-16 transition-colors rounded-full text-white overflow-hidden">
+                    <p className='font-poppins font-medium text-xs text-black'>Guest Access</p>
+                    <img src={arrow} className='invert'/>
                 </button>
               </Link>
             </div>
             <div className="mt-12 imgwrap">
                 <img src={pcview} alt="" className='mimg' />
             </div>
-            <div className='w-[500px] h-[100%] rotate-[-35deg] bg-[#e5e5fd]  absolute top-[-220px] right-[-300px] -z-10 bars'></div>
-            <div className='w-[500px] h-[100%] rotate-[35deg] bg-[#fdf9e5]  absolute top-[-220px] left-[-300px] -z-10 bars'></div>
+            <div className='w-[500px] h-[100%] rotate-[-45deg] lg:rotate-[-35deg] bg-[#e5e5fd]  absolute top-[-220px] right-[-300px] -z-10 bars'></div>
+            <div className='w-[500px] h-[100%] rotate-[45deg] lg:rotate-[35deg] bg-[#fdf9e5]  absolute top-[-220px] left-[-300px] -z-10 bars'></div>
        </main>
        </section>
        {/* Features Section */}
@@ -153,7 +160,7 @@ const Home = () => {
                 <p className='mt-2 font-lg text-slate-600 text-center'>Use as much storage as you need, and pay only when you exceed our set limits Pay as much storage as you need, and pay only when you exceed our set limits Pay as much storage as you need, and pay only when you exceed our set limits </p>
             </div>
             </div>
-            <div className='min-w-full sbmgsec min-h-[50vh] flex justify-between lg:gap-6 items-center mt-6 flex-wrap'>
+            {/* <div className='min-w-full sbmgsec min-h-[50vh] flex justify-between lg:gap-6 items-center mt-6 flex-wrap'>
               <div className='lg:max-w-[50%] min-w-full relative overflow-hidden'>
                 <p className='text-2xl font-semibold sbmgtxt text-slate-700'>MGCloud</p>
                 <p className='lg:text-7xl text-5xl font-bold sbmg'>Security <br/>Redefined.</p>
@@ -165,8 +172,27 @@ const Home = () => {
                   <img src={caret} alt="" />
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
+       </section>
+       {/* BentoGrid */}
+       <section className='p-6 min-w-full h-screen flex flex-col'>
+        {/* <div className='w-full flex justify-center'>
+        <img src={logo} alt="logo" className='lg:w-52'/>
+        </div> */}
+        <div className='w-full h-full grid grid-cols-8 grid-rows-8 gap-6'>
+          <div className='col-span-3 row-span-3 flex justify-center flex-col rounded-xl bg-white shadow-md ring-1 ring-gray-100 p-6'>
+            <p className='font-sfprodisplay font-bold text-3xl'>Robust Security</p>
+            <p className='font-sfprodisplay font-lg tracking-wide text-[15px] text-gray-500 mt-3'>With Advanced Encryption Powered by Industry Grade AES-256bit Client-Side Encryption, 
+              your file is all basically reversably scrambled when it leaves your Machine</p>
+          </div>
+
+          <div className='col-span-3 row-span-5  row-start-4 flex justify-center flex-col rounded-xl bg-white shadow-md ring-1 ring-gray-100 p-6'>
+          <p className='font-sfprodisplay font-semibold text-xl'>Robust Security</p>
+          <p className='font-sfprodisplay font-lg tracking-wide text-sm text-gray-500 mt-3'>With Advanced Encryption Powered by Industry Grade AES-256bit Client-Side Encryption, 
+            your file is all basically reversably scrambled when it leaves your Machine</p>
+        </div>
+        </div>
        </section>
        {/* Pricing Section */}
        {/* <section className="px-4 pt-4 min-w-full min-h-[100vh] flex flex-col items-center justify-start">
@@ -201,7 +227,7 @@ const Home = () => {
          </div>
        </section> */}
        {/* Footer */}
-       <section className='relative min-w-full gap-2 min-h-[50vh] bg-[#F8F8F8] px-6 py-6 pb-14 flex justify-between flex-wrap mt-12 lg:mt-0'>
+       {/* <section className='relative min-w-full gap-2 min-h-[50vh] bg-[#F8F8F8] px-6 py-6 pb-14 flex justify-between flex-wrap mt-12 lg:mt-0'>
         <div className="flex flex-col md:max-w-[50%]">
         <div>
         <p className='text-2xl font-semibold'>MGCloud</p>
@@ -237,7 +263,7 @@ const Home = () => {
             <a href="#">Support</a>
           </div>
         </div>
-       </section>
+       </section> */}
     </section>
   )
 }

@@ -17,11 +17,14 @@ import Navbar from '../components/navbar'
 import Sortoptions from '../components/sortoptions'
 import Filepreview from '../components/filepreview'
 import Previewactions from '../components/previewactions'
+import UploadNotification from '../components/uploadnotification'
+import FileUploading from '../components/fileuploading'
 
 // Functional Components
 import { useAuth } from '../authcontext'
 import { FILE_ICONS } from '../fileconstants'
 import { alphabeticalSorter, dateSorter, formatBytes, sizeSorter } from '../formatters'
+import { modifyFavouriteStatus } from '../mgc_helper'
 
 
 
@@ -43,12 +46,16 @@ const Files = () => {
         filesharing: null
     })
     useEffect(()=>{
-        getUserFiles(user.uid).then(f=>{
-            // alphabeticalSorter(f)
-            let temp = filedata.filemeta
-            setfiledata({filemeta: temp, filedata: f})
-            console.log("Non Updated", f)
-        })
+        console.log("user",user.uid)
+        if (user.uid != undefined)
+        {
+            getUserFiles(user.uid).then(f=>{
+                // alphabeticalSorter(f)
+                let temp = filedata.filemeta
+                setfiledata({filemeta: temp, filedata: f})
+                console.log("Non Updated", f)
+            })
+        }
     },[])
 
     function sorthandler(type){
@@ -84,9 +91,10 @@ const Files = () => {
             })
         })
     }
-  
+
     return (
     <section className='relative w-full bg-[#F7F7F5] h-[90vh]'>
+
         <Navbar/>
         {statuspreview.show?<Filepreview status={statuspreview} setshow={setstatuspreview} fileurl={statuspreview.fileurl}/>:<></>}
         <section className='p-6 gap-4 lg:ml-56 bg-[#F7F7F5] h-[100%]'>
@@ -97,11 +105,11 @@ const Files = () => {
             </div>
                 <Uploadbtn fileupdate={setfiledata}/>
             </div>
-        <div className="overflow-x-auto mt-5 bg-white min-h-[50vh] rounded-md shadow-md">
-            <table className="table">
+        <div className="overflow-x-auto mt-5 bg-white min-h-[50vh] max-h-[85%] rounded-md shadow-md">
+            <table className="table outline-none relative">
             {/* head */}
-            <thead className='min-w-[100%]'>
-                <tr>
+            <thead className='min-w-[100%] outline-none border-none sticky top-0 bg-white z-10'>
+                <tr className='outline-none border-1 border-gray-200'>
                         <th className='hover:bg-gray-100 transition-colors cursor-pointer flex justify-between' onClick={()=>sorthandler('alpha')}>
                             <div className='flex gap-1 items-center'>
                             <img src={fileico} className='w-4 opacity-65'/>
@@ -150,7 +158,7 @@ const Files = () => {
             </thead>
             <tbody>
                 {filedata.filedata.map(file=>(
-                    <tr className='hover:shadow-md transition-all duration-300 cursor-pointer' key={file.id}>
+                    <tr className='hover:shadow-md transition-all duration-300 cursor-pointer border-none outline-none' key={file.id}>
                     <td className='flex items-center gap-2 hover:bg-gray-100 transition-all h-full rounded-md' onClick={()=>previewhandler(file)}>
                         <img src={FILE_ICONS[file.filename.toLocaleLowerCase().split('.')[1]] || FILE_ICONS['unknown']} alt="folder" className='opacity-65 min-w-10 min-h-10'/>
                         
@@ -170,7 +178,12 @@ const Files = () => {
                     </td>
 
                     <td className='text-gray-500'>
-                        <Fileactions/>
+                        <Fileactions
+                        file={file}
+                        userid={user.uid}
+                        filestate={filedata}
+                        setfilestate={setfiledata}
+                        />
                         {/* <img src={fileactions} alt="fileactions" className='w-4'/> */}
                     </td>
                     </tr>

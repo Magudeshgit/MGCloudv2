@@ -14,7 +14,6 @@ import PageNav from '../components/pagenav'
 import Uploadbtn from '../components/uploadbtn'
 import Fileactions from '../components/fileactions'
 import Statusdrawer from '../components/statusdrawer'
-import UploadNotification from '../components/uploadnotification'
 import Navbar from '../components/navbar'
 
 // Functional Components

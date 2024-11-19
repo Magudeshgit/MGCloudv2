@@ -4,6 +4,7 @@ import Loading from "./pages/loading"
 
 // const API = "https://mgauthsphere.pythonanywhere.com/api/"
 const API = "http://127.0.0.1:8000/api/security/"
+// const API = 'http://192.168.56.91:5001/api/security/'
 // const API = "http://192.168.129.91:8000/api/"
 
 // Secret
@@ -22,7 +23,6 @@ export const AuthProvider = ({children}) =>{
     },[])
 
     const authenticate = (params) => {
-        console.log(params)
         let response = fetch(
             API + "authenticate/",
             {
@@ -49,7 +49,8 @@ export const AuthProvider = ({children}) =>{
                         fullname: f['first_name']+' '+f['last_name'],
                         uid: f['user_id']
                     })
-                    navigate('/home')
+                    window.location.href = `${window.location.origin}/home`
+                    // navigate('/home')
                 }
                 return f
             })

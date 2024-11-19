@@ -27,7 +27,7 @@ const FileUploading = (props) => {
           <p className='font-normal text-sm'>{Math.round(props.fileprogress)}%</p>
         </div>
         </div>
-        <progress className="progress w-full h-1 transition-all" value={props.fileprogress} max="100"></progress>
+        <progress className="progress w-full h-1 transition-all text-black" value={props.fileprogress} max="100"></progress>
         <button className='absolute top-3 right-10 opacity-50' onClick={abortUpload}>
           <XMarkIcon className='w-4 h-4'/>
         </button>

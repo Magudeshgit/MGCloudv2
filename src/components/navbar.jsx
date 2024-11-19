@@ -64,7 +64,7 @@ const Navbar = () => {
       </button>
 
       <div ref={logoref} className='logo'>
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" className='lg:w-52'/>
       </div>
 
       {/* Search Bar */}
@@ -99,11 +99,11 @@ const Navbar = () => {
 <div id="default-sidebar" class="fixed top-18 left-[-224px] lg:left-0 w-56 bg-white z-50 sidebar h-screen transition-all duration-300 ease-in-out" aria-label="Sidebar" ref={sidebar}>
   <div class="h-full px-3 py-4 overflow-y-auto dark:bg-gray-800">
     <ul class="space-y-2 font-medium font-poppins">
-      {navigation.map(element=>
-        <li>
+      {navigation.map((element, index)=>
+        <li key={index}>
           <Link to={element.href} class="flex gap-2 items-center p-2 text-sm text-gray-500 rounded-lg dark:text-white hover:bg-white hover:text-black group hover:invert transition-all duration-200">
               {element.image}
-              {element.name}
+              {element.name}  
           </Link> 
         </li>
         )}
