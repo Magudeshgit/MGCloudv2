@@ -6,6 +6,7 @@ import caret from '../assets/images/caret.svg'
 import { Link } from 'react-router-dom'
 import logo from '../assets/images/logo.svg'
 
+
 // Animation Dependencies
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
